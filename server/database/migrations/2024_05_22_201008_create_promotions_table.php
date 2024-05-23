@@ -18,7 +18,7 @@ return new class extends Migration
             $table->float('discount');
             $table->dateTime('start_date');
             $table->dateTime('end_date');
-            $table->boolean('is_active')->default('true');
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }
