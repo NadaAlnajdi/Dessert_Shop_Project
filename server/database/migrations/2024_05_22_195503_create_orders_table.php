@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id(); 
             $table->bigInteger('date');
             $table->float('total_price'); 
-            $table->enum('status', ['pending', 'accepted', 'rejected']); 
+            $table->enum('status', ['pending', 'accepted', 'rejected'])->default('pending'); 
             $table->unsignedBigInteger('shipping_address'); 
             $table->timestamps();
 
