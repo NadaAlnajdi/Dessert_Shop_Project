@@ -1,0 +1,54 @@
+.breadcrumb-section {
+  padding: 20px 0;
+  background: #f8f9fa;
+}
+
+.breadcrumb h2 {
+  font-size: 2.5rem;
+  font-weight: 600;
+}
+
+.breadcrumb-links {
+  text-align: right;
+  font-size: 1rem;
+}
+
+.breadcrumb-links a {
+  color: #6c757d;
+  text-decoration: none;
+}
+
+.wishlist-section {
+  padding: 50px 0;
+}
+
+.wishlist-table th {
+  text-transform: uppercase;
+  font-weight: 600;
+  color: #6c757d;
+}
+
+.wishlist-table img {
+  width: 100px;
+  height: auto;
+}
+
+.product-name {
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.btn-primary {
+  background-color: #000;
+  border: none;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.btn-close {
+  color: #6c757d;
+}
+
+.btn-close:hover {
+  color: #000;
+}
