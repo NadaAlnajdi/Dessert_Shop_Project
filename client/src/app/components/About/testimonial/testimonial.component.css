@@ -1,0 +1,71 @@
+.testimonial {
+  background-color: #fff3e6;
+  padding: 50px 0;
+}
+
+.section-title span {
+  color: #ff6f61;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.section-title h2 {
+  font-size: 36px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  position: relative;
+  color: #333;
+}
+
+.testimonial__item {
+  background: #fff;
+  padding: 30px;
+  box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+.testimonial__author {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.testimonial__author__pic img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 15px;
+}
+
+.testimonial__author__text h5 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.testimonial__author__text span {
+  display: block;
+  font-size: 14px;
+  color: #777;
+}
+
+.rating {
+  margin-bottom: 15px;
+}
+
+.rating .fa-star,
+.rating .fa-star-half-alt {
+  color: #ff6f61;
+}
+
+/* Customize carousel indicators */
+.carousel-indicators [data-bs-target] {
+  background-color: #ff6f61;
+  border-radius: 50%;
+  width: 10px;
+  height: 10px;
+}
+
+.carousel-indicators .active {
+  background-color: #333;
+}
