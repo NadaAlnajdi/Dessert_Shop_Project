@@ -8,11 +8,12 @@ use App\Http\Controllers\Auth\PasswordResetController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\WishlistController;
+use App\Http\Controllers\PromotionController;
+
 
 /*
 |--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
+| API Routes          ------------------
 |
 | Here is where you can register API routes for your application. These
 | routes are loaded by the RouteServiceProvider and all of them will
@@ -35,14 +36,16 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('wishlists/{product_id}', [WishlistController::class, 'destroy']);
 });
 
-
-
 Route::post('password/forgot-password', [ForgetPasswordController::class, 'forgetPassword']);
 Route::post('password/reset', [PasswordResetController::class, 'passwordReset']);
-
 
 // Product routes
 Route::apiResource('products', ProductController::class);
 
 // Category routes
 Route::apiResource('categories', CategoryController::class);
+
+Route::prefix('admin')->group(function () {
+    Route::apiResource('promotions', PromotionController::class);
+});
+
