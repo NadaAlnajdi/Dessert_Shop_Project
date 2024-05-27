@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\ForgetPasswordController;
 use App\Http\Controllers\Auth\PasswordResetController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CategoryController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -32,3 +34,10 @@ Route::middleware('auth:sanctum')->group(function () {
 
 Route::post('password/forgot-password', [ForgetPasswordController::class, 'forgetPassword']);
 Route::post('password/reset', [ResetPasswordController::class, 'passwordReset']);
+
+
+// Product routes
+Route::apiResource('products', ProductController::class);
+
+// Category routes
+Route::apiResource('categories', CategoryController::class);
