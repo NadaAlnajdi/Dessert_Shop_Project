@@ -4,47 +4,44 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Wishlist;
+use Illuminate\Support\Facades\Auth;
+
 
 
 class WishlistController extends Controller
 {
     public function index(Request $request)
     {
-        $user = $request->user();
-        $wishlists = Wishlist::with('product')->where('user_id', $user->id)->get();
-        
-        return response()->json($wishlists);
+        $user = Auth::user();
+        $wishlist = Wishlist::with('products')->where('user_id', $user->id)->first();
+
+        return response()->json($wishlist);
     }
 
     public function store(Request $request)
-    {
-        $user = $request->user();
-        
-        $request->validate([
-            'product_id' => 'required|exists:products,id',
-        ]);
+    
 
-        $wishlist = Wishlist::create([
-            'user_id' => $user->id,
-            'product_id' => $request->product_id,
-        ]);
-
-        return response()->json($wishlist, 201);
-    }
+        {
+            $user = Auth::user();
+            $wishlist = Wishlist::firstOrCreate(['user_id' => $user->id]);
+    
+            $wishlist->products()->attach($request->product_id);
+    
+            return response()->json(['message' => 'Product added to wishlist successfully']);
+        }
+    
+    
 
     public function destroy(Request $request, $product_id)
     {
-        $user = $request->user();
-
-        $wishlist = Wishlist::where('user_id', $user->id)
-                            ->where('product_id', $product_id)
-                            ->first();
+        $user = Auth::user();
+        $wishlist = Wishlist::where('user_id', $user->id)->first();
 
         if ($wishlist) {
-            $wishlist->delete();
-            return response()->json(null, 204);
+            $wishlist->products()->detach($request->product_id);
+            return response()->json(['message' => 'Product removed from wishlist successfully']);
         }
 
-        return response()->json(['message' => 'Product not found in wishlist'], 404);
+        return response()->json(['message' => 'Wishlist not found'], 404);
     }
 }

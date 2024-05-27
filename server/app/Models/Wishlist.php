@@ -12,6 +12,7 @@ class Wishlist extends Model
 
 {
     use HasFactory;
+    protected $fillable = ['user_id'];
 
     public function user(): BelongsTo
     {
@@ -20,6 +21,6 @@ class Wishlist extends Model
 
     public function products()
     {
-        return $this->HasMany(Product::class);
+        return $this->belongsToMany(Product::class);
     }
 }
