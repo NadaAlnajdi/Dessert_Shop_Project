@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\WishlistController;
 
 
 /*
@@ -17,6 +16,3 @@ use App\Http\Controllers\WishlistController;
 
 
 
-    Route::get('wishlists', [WishlistController::class, 'index']);
-    Route::post('wishlists', [WishlistController::class, 'store']);
-    Route::delete('wishlists/{product_id}', [WishlistController::class, 'destroy']);

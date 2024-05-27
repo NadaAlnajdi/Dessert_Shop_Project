@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class User extends Authenticatable
 {
@@ -29,8 +30,18 @@ class User extends Authenticatable
         return $this->hasMany(ShippingAddress::class);
     }
 
-    public function orders()
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
+
+    public function wishlist()
     {
-        return $this->hasMany(Order::class);
+        return $this->HasOne(Wishlist::class);
     }
 }
