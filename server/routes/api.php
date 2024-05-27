@@ -4,7 +4,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\ForgetPasswordController;
-use App\Http\Controllers\Auth\PasswordResetController;
+use App\Http\Controllers\Auth\PasswordResetController;#;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\OrderController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -26,9 +28,22 @@ Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
+
+
+    Route::get('profile/{id}', [UserController::class, 'show']);
+    Route::post('profile/{id}', [UserController::class, 'update']);
+    Route::post('profile/password/{id}', [UserController::class, 'updatePassword']);
+
+    Route::delete('/user/{id}', [UserController::class, 'deleteAccount']);
+
+    Route::get('/orders/{id}', [OrderController::class, 'show']);
+    Route::post('/orders/{id}', [OrderController::class, 'cancel']);
+
 });
 
 
 
+
+
 Route::post('password/forgot-password', [ForgetPasswordController::class, 'forgetPassword']);
-Route::post('password/reset', [ResetPasswordController::class, 'passwordReset']);
+
