@@ -12,13 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('orders', function (Blueprint $table) {
-            $table->id(); 
+            $table->id();
+            $table->unsignedBigInteger('user_id'); 
             $table->dateTime('date')->useCurrent();
             $table->float('total_price'); 
             $table->enum('status', ['pending', 'accepted', 'rejected'])->default('pending'); 
             $table->unsignedBigInteger('shipping_address_id'); 
             $table->timestamps();
 
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('shipping_address_id')->references('id')->on('shipping_addresses')->onDelete('cascade');
         });
     }
