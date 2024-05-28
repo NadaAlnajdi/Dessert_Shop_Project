@@ -25,11 +25,6 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
-    public function shippingAddresses()
-    {
-        return $this->hasMany(ShippingAddress::class);
-    }
-
 
     /**
      * The attributes that should be cast.
