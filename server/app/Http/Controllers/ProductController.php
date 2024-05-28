@@ -4,16 +4,18 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
-use GuzzleHttp\Psr7\Message;
+use App\Models\ProductImage;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::with('category')->paginate(10);
+        $products = Product::with('category', 'images')->paginate(10);
         return response()->json($products);
     }
-
+    
     public function store(Request $request)
     {
         $validatedData = $request->validate([
@@ -22,11 +24,24 @@ class ProductController extends Controller
             'description' => 'nullable|string',
             'stock_quantity' => 'required|integer|min:0',
             'category_id' => 'required|exists:categories,id',
+            'images.*' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
+
+        $validatedData['slug'] = Str::slug($validatedData['title']);
 
         $product = Product::create($validatedData);
 
-        return response()->json($product, 201);
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                $path = $image->store('uploads', 'public');
+                ProductImage::create([
+                    'path' => 'public/' . $path,
+                    'product_id' => $product->id,
+                ]);
+            }
+        }
+
+        return response()->json($product->load('images'), 201);
     }
 
     public function update(Request $request, $slug)
@@ -35,20 +50,40 @@ class ProductController extends Controller
         if (!$product) {
             return response()->json(['message' => 'Product not found'], 404);
         }
+
         $validatedData = $request->validate([
             'title' => 'sometimes|required',
             'price' => 'sometimes|required|numeric|min:1',
             'description' => 'nullable|string',
             'stock_quantity' => 'sometimes|integer|min:0',
             'category_id' => 'sometimes|required|exists:categories,id',
+            'images.*' => 'sometimes|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
+
+        if (isset($validatedData['title'])) {
+            $validatedData['slug'] = Str::slug($validatedData['title']);
+        }
 
         $product->update($validatedData);
 
-        if (!$product) {
-            return response()->json(['message' => 'Product not found'], 404);
+        if ($request->hasFile('images')) {
+            // Delete old images
+            foreach ($product->images as $image) {
+                Storage::disk('public')->delete(str_replace('public/', '', $image->path));
+                $image->delete();
+            }
+
+            // Store new images
+            foreach ($request->file('images') as $image) {
+                $path = $image->store('uploads', 'public');
+                ProductImage::create([
+                    'path' => 'public/' . $path,
+                    'product_id' => $product->id,
+                ]);
+            }
         }
-        return response()->json($product, 200);
+
+        return response()->json($product->load('images'), 200);
     }
 
     public function destroy($slug)
@@ -57,7 +92,15 @@ class ProductController extends Controller
         if (!$product) {
             return response()->json(['message' => 'Product not found'], 404);
         }
+
+        // Delete images
+        foreach ($product->images as $image) {
+            Storage::disk('public')->delete(str_replace('public/', '', $image->path));
+            $image->delete();
+        }
+
         $product->delete();
+
         return response()->json(['message' => 'Product deleted successfully'], 204);
     }
 }
