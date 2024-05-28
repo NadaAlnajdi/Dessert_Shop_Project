@@ -45,15 +45,33 @@ class UserController extends Controller
         $user = $request->user();
 
         $request->validate([
+            'current_password' => 'required|string',
             'new_password' => 'required|string|min:8|confirmed',
         ]);
+
+
+        if (!Hash::check($request->current_password, $user->password)) {
+            throw ValidationException::withMessages([
+                'current_password' => ['The provided current password is incorrect.'],
+            ]);
+        }
+
+
+        if ($request->new_password !== $request->new_password_confirmation) {
+            throw ValidationException::withMessages([
+                'new_password_confirmation' => ['The new password and confirmation do not match.'],
+            ]);
+        }
+
 
         $user->password = Hash::make($request->new_password);
         $user->save();
 
-        return response()->json(['message' => 'Password updated successfully']);
-    }
+      
+        $user->tokens()->delete();
 
+        return response()->json(['message' => 'Password updated successfully. Please login with your new password.']);
+    }
     public function deleteAccount(Request $request)
     {
         $request->validate([
