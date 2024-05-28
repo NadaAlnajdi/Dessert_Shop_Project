@@ -103,4 +103,4 @@ class OrderController extends Controller
         $orders = $user->orders()->with(['orderItems.product', 'shippingAddress'])->get();
         return response()->json($orders);
     }
-
+}
