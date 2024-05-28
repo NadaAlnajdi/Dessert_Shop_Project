@@ -1,11 +1,11 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { WishlistComponent } from './components/wishlist/wishlist.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet,WishlistComponent],
+  imports: [RouterOutlet,CommonModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
