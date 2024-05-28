@@ -48,6 +48,11 @@ class Product extends Model
     {
         return $this->belongsToMany(Promotion::class, 'promotion_items', 'product_id', 'promotion_id');
     }
+
+    public function orders()
+    {
+        return $this->belongsToMany(Order::class, 'order_items');
+    }
 }
 
 
