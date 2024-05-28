@@ -9,14 +9,17 @@ class ShippingAddress extends Model
 {
     use HasFactory;
 
-
-    
-    protected $fillable = ['user_id', 'city', 'state', 'street', 'phone_number'];
-
+    protected $fillable = [
+        'user_id', 'city', 'state', 'street', 'phone_number'
+    ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
+    public function orders()
+    {
+        return $this->hasMany(Order::class, 'shipping_address_id');
+    }
 }

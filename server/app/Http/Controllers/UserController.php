@@ -10,27 +10,22 @@ use App\Models\ShippingAddress;
 
 class UserController extends Controller
 {
-
-
-    public function show($id)
+    // Middleware to ensure the user is authenticated
+    public function __construct()
     {
+        $this->middleware('auth:sanctum');
+    }
 
-        $user = User::with(['shippingAddresses.orders'])->find($id);
-
-        if (!$user) {
-            return response()->json(['message' => 'User not found'], 404);
-        }
+    public function show(Request $request)
+    {
+        $user = $request->user()->load('shippingAddresses.orders');
 
         return response()->json($user);
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        $user = User::find($id);
-
-        if (!$user) {
-            return response()->json(['message' => 'User not found'], 404);
-        }
+        $user = $request->user();
 
         $validatedData = $request->validate([
             'first_name' => 'required|string|max:255',
@@ -45,13 +40,9 @@ class UserController extends Controller
         return response()->json($user);
     }
 
-    public function updatePassword(Request $request, $id)
+    public function updatePassword(Request $request)
     {
-        $user = User::find($id);
-
-        if (!$user) {
-            return response()->json(['message' => 'User not found'], 404);
-        }
+        $user = $request->user();
 
         $request->validate([
             'new_password' => 'required|string|min:8|confirmed',
@@ -63,23 +54,19 @@ class UserController extends Controller
         return response()->json(['message' => 'Password updated successfully']);
     }
 
-    public function deleteAccount(Request $request, $id)
+    public function deleteAccount(Request $request)
     {
         $request->validate([
             'password' => 'required|string',
         ]);
 
-        $user = User::find($id);
+        $user = $request->user();
 
-        if (!$user) {
-            return response()->json(['message' => 'User not found'], 404);
-        }
-
-        if (!Hash::check($request->password, $user->password)) {
-            throw ValidationException::withMessages([
-                'password' => ['The provided password does not match our records.'],
-            ]);
-        }
+        // if (!Hash::check($request->password, $user->password)) {
+        //     throw ValidationException::withMessages([
+        //         'password' => ['The provided password does not match our records.'],
+        //     ]);
+        // }
 
         $user->delete();
 
