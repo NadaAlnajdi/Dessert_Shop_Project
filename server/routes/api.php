@@ -63,8 +63,12 @@ Route::apiResource('products', ProductController::class);
 // Category routes
 Route::apiResource('categories', CategoryController::class);
 
-Route::prefix('admin')->group(function () {
+// Route::prefix('admin')->group(function () {
+//     Route::apiResource('promotions', PromotionController::class);
+// });
+
+
+// Admin routes
+Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function () {
     Route::apiResource('promotions', PromotionController::class);
 });
-
-
