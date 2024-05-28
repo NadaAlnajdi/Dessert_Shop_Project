@@ -53,4 +53,27 @@ class AdminController extends Controller
 
         return response()->json($order, 200);
     }
+
+    public function updateOrderStatus(Request $request, $id)
+    {
+        $validatedData = $request->validate([
+            'status' => 'required|in:accepted,rejected',
+        ]);
+
+        $order = Order::find($id);
+
+        if (!$order) {
+            return response()->json(['message' => 'Order not found'], 404);
+        }
+
+         // Check if the current status is already accepted or rejected
+        if ($order->status === 'accepted' || $order->status === 'rejected') {
+            return response()->json(['message' => 'Order status cannot be updated because it is already accepted or rejected'], 400);
+        }
+
+        $order->status = $validatedData['status'];
+        $order->save();
+
+        return response()->json(['message' => 'Order status updated successfully']);
+    }
 }
