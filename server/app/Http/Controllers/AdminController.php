@@ -42,4 +42,15 @@ class AdminController extends Controller
         $orders = Order::with(['shippingAddress.user:id,first_name,last_name', 'products:title'])->latest()->get();
         return response()->json($orders, 200);
     }
+
+    public function getOrder($id)
+    {
+        $order = Order::with(['shippingAddress.user:id,first_name,last_name', 'products:title'])->find($id);
+
+        if (!$order) {
+            return response()->json(['message' => 'Order not found'], 404);
+        }
+
+        return response()->json($order, 200);
+    }
 }
