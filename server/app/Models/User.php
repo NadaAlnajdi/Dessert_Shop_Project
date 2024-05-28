@@ -25,11 +25,6 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
-    public function shippingAddresses()
-    {
-        return $this->hasMany(ShippingAddress::class);
-    }
-
 
     /**
      * The attributes that should be cast.
@@ -44,4 +39,15 @@ class User extends Authenticatable
     {
         return $this->HasOne(Wishlist::class);
     }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    public function shippingAddresses()
+    {
+        return $this->hasMany(ShippingAddress::class);
+    }
+
 }

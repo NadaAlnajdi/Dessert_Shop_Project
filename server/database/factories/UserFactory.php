@@ -24,7 +24,6 @@ class UserFactory extends Factory
             'password' => bcrypt('password'),
             'image' => $this->faker->imageUrl(640, 480, 'people', true, 'Faker'),
             'gender' => $this->faker->randomElement(['male', 'female']),
-            'role' => 'user', 
             'email_verified_at' => now(),
             'remember_token' => Str::random(10),
         ];
