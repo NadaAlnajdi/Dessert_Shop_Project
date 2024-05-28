@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\PasswordResetController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\WishlistController;
+use App\Http\Controllers\OrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,9 +31,17 @@ Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
+
+    //wishlist routes
     Route::get('wishlists', [WishlistController::class, 'index']);
     Route::post('wishlists', [WishlistController::class, 'store']);
     Route::delete('wishlists/{product_id}', [WishlistController::class, 'destroy']);
+
+    //checkout routes
+    Route::post('/checkout', [OrderController::class, 'checkout']);
+    Route::get('/orders', [OrderController::class, 'getOrders']);
+    Route::delete('/orders/{id}', [OrderController::class, 'cancelOrder']);
+    Route::patch('/orders/{id}/status', [OrderController::class, 'updateOrderStatus']);
 });
 
 
