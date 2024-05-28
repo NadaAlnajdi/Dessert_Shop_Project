@@ -7,23 +7,20 @@ use App\Models\Category;
 
 class CategoryController extends Controller
 {
-    /**
-     * Display a listing of the categories.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         $categories = Category::all();
         return response()->json($categories);
     }
 
-    /**
-     * Store a newly created category in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    public function show($slug)
+    {
+        $category = Category::where('slug', $slug)->first();
+        if (!$category) {
+            return response()->json(['message' => 'Category not found'], 404);
+        }
+        return response()->json($category);
+    }
     public function store(Request $request)
     {
         $validatedData = $request->validate([
@@ -36,19 +33,14 @@ class CategoryController extends Controller
         return response()->json($category, 201);
     }
 
-    /**
-     * Update the specified category in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function update(Request $request, $slug)
     {
-        $category = Category::findOrFail($id);
-
+        $category = Category::where('slug', $slug)->first();
+        if (!$category) {
+            return response()->json(['message' => 'Category not found'], 404);
+        }
         $validatedData = $request->validate([
-            'name' => 'required',
+            'name' => 'sometimes|required',
             'description' => 'nullable|string',
         ]);
 
@@ -57,17 +49,13 @@ class CategoryController extends Controller
         return response()->json($category, 200);
     }
 
-    /**
-     * Remove the specified category from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function destroy($slug)
     {
-        $category = Category::findOrFail($id);
+        $category = Category::where('slug', $slug)->first();
+        if (!$category) {
+            return response()->json(['message' => 'Category not found'], 404);
+        }
         $category->delete();
-
-        return response()->json(null, 204);
+        return response()->json(['message' => 'Category deleted successfully'], 204);
     }
 }

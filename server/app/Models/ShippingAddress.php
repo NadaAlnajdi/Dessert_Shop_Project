@@ -9,8 +9,10 @@ class ShippingAddress extends Model
 {
     use HasFactory;
 
+
     
     protected $fillable = ['user_id', 'city', 'state', 'street', 'phone_number'];
+
 
     public function user()
     {

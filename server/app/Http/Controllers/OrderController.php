@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+
 use Illuminate\Support\Facades\Auth;
 use App\Models\Order;
 use App\Models\OrderItem;
@@ -103,4 +104,3 @@ class OrderController extends Controller
         return response()->json($orders);
     }
 
-}

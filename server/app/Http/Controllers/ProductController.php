@@ -4,32 +4,23 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use GuzzleHttp\Psr7\Message;
 
 class ProductController extends Controller
 {
-    /**
-     * Display a listing of the products.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        $products = Product::all();
+        $products = Product::with('category')->paginate(10);
         return response()->json($products);
     }
 
-    /**
-     * Store a newly created product in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'name' => 'required',
-            'price' => 'required|numeric',
+            'title' => 'required',
+            'price' => 'required|numeric|min:1',
             'description' => 'nullable|string',
+            'stock_quantity' => 'required|integer|min:0',
             'category_id' => 'required|exists:categories,id',
         ]);
 
@@ -38,40 +29,35 @@ class ProductController extends Controller
         return response()->json($product, 201);
     }
 
-    /**
-     * Update the specified product in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function update(Request $request, $slug)
     {
-        $product = Product::findOrFail($id);
-
+        $product = Product::where('slug', $slug)->first();
+        if (!$product) {
+            return response()->json(['message' => 'Product not found'], 404);
+        }
         $validatedData = $request->validate([
-            'name' => 'required',
-            'price' => 'required|numeric',
+            'title' => 'sometimes|required',
+            'price' => 'sometimes|required|numeric|min:1',
             'description' => 'nullable|string',
-            'category_id' => 'required|exists:categories,id',
+            'stock_quantity' => 'sometimes|integer|min:0',
+            'category_id' => 'sometimes|required|exists:categories,id',
         ]);
 
         $product->update($validatedData);
 
+        if (!$product) {
+            return response()->json(['message' => 'Product not found'], 404);
+        }
         return response()->json($product, 200);
     }
 
-    /**
-     * Remove the specified product from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function destroy($slug)
     {
-        $product = Product::findOrFail($id);
+        $product = Product::where('slug', $slug)->first();
+        if (!$product) {
+            return response()->json(['message' => 'Product not found'], 404);
+        }
         $product->delete();
-
-        return response()->json(null, 204);
+        return response()->json(['message' => 'Product deleted successfully'], 204);
     }
 }
