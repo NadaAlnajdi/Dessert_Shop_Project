@@ -13,6 +13,9 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\PromotionController;
+use App\Http\Controllers\CartController;
+
+
 
 
 
@@ -67,4 +70,9 @@ Route::prefix('admin')->group(function () {
     Route::apiResource('promotions', PromotionController::class);
 });
 
+Route::post('/cart/add', [CartController::class, 'addToCart']);
+Route::delete('/cart/remove/{id}', [CartController::class, 'removeFromCart']);
+Route::get('/cart/{userId}', [CartController::class, 'viewCart']);
+Route::put('/cart/item/{id}/increase', [CartController::class, 'increaseQuantity']);
+Route::put('/cart/item/{id}/decrease', [CartController::class, 'decreaseQuantity']);
 

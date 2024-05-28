@@ -1,0 +1,43 @@
+<div *ngIf="cart">
+  <table>
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th>Quantity</th>
+        <th>Price (Before Discount)</th>
+        <th>Total Price</th>
+        <th>Remove</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of cart.cartItems">
+        <td>
+          <img [src]="item.product.image_url" alt="{{ item.product.title }}" width="50">
+          {{ item.product.title }}
+        </td>
+        <td>
+          <button (click)="decreaseQuantity(item.id)">-</button>
+          {{ item.quantity }}
+          <button (click)="increaseQuantity(item.id)">+</button>
+        </td>
+        <td>
+          {{ item.product.price | currency }}
+        </td>
+        <td>
+          {{ (item.product.promotions.length > 0 
+                ? (item.product.price - (item.product.price * (item.product.promotions[0].discount / 100))) 
+                : item.product.price) * item.quantity | currency }}
+        </td>
+        <td>
+          <button (click)="removeItem(item.id)">Remove</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div>
+    <p>Subtotal: {{ subtotal | currency }}</p>
+    <p>Total Price: {{ totalPrice | currency }}</p>
+    <button (click)="proceedToCheckout()">Proceed to Checkout</button>
+  </div>
+</div>
