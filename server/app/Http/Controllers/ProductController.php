@@ -15,7 +15,7 @@ class ProductController extends Controller
         $products = Product::with('category', 'images')->paginate(10);
         return response()->json($products);
     }
-    
+
     public function store(Request $request)
     {
         $validatedData = $request->validate([
@@ -29,13 +29,18 @@ class ProductController extends Controller
 
         $validatedData['slug'] = Str::slug($validatedData['title']);
 
+        // Check if the product already exists
+        if (Product::where('slug', $validatedData['slug'])->exists()) {
+            return response()->json(['message' => 'Product already exists'], 409);
+        }
+
         $product = Product::create($validatedData);
 
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
                 $path = $image->store('uploads', 'public');
                 ProductImage::create([
-                    'path' => 'public/' . $path,
+                    'path' => 'uploads/' . $path,
                     'product_id' => $product->id,
                 ]);
             }
@@ -69,7 +74,7 @@ class ProductController extends Controller
         if ($request->hasFile('images')) {
             // Delete old images
             foreach ($product->images as $image) {
-                Storage::disk('public')->delete(str_replace('public/', '', $image->path));
+                Storage::disk('public')->delete($image->path);
                 $image->delete();
             }
 
@@ -77,7 +82,7 @@ class ProductController extends Controller
             foreach ($request->file('images') as $image) {
                 $path = $image->store('uploads', 'public');
                 ProductImage::create([
-                    'path' => 'public/' . $path,
+                    'path' => 'uploads/' . $path,
                     'product_id' => $product->id,
                 ]);
             }
