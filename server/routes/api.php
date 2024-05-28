@@ -12,6 +12,7 @@ use App\Http\Controllers\Auth\PasswordResetController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\WishlistController;
+
 use App\Http\Controllers\PromotionController;
 
 
@@ -38,6 +39,19 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 
 
+    //wishlist routes
+    Route::get('wishlists', [WishlistController::class, 'index']);
+    Route::post('wishlists', [WishlistController::class, 'store']);
+    Route::delete('wishlists/{product_id}', [WishlistController::class, 'destroy']);
+
+    //checkout routes
+    Route::post('/checkout', [OrderController::class, 'checkout']);
+    Route::get('/orders', [OrderController::class, 'getOrders']);
+    Route::delete('/orders/{id}', [OrderController::class, 'cancelOrder']);
+    Route::patch('/orders/{id}/status', [OrderController::class, 'updateOrderStatus']);
+});
+
+
 
     Route::get('profile/{id}', [UserController::class, 'show']);
     Route::post('profile/{id}', [UserController::class, 'update']);
@@ -45,12 +59,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::delete('/user/{id}', [UserController::class, 'deleteAccount']);
 
-    Route::get('/orders/{id}', [OrderController::class, 'show']);
-    Route::post('/orders/{id}', [OrderController::class, 'cancel']);
 
-    Route::get('wishlists', [WishlistController::class, 'index']);
-    Route::post('wishlists', [WishlistController::class, 'store']);
-    Route::delete('wishlists/{product_id}', [WishlistController::class, 'destroy']);
 
 });
 
