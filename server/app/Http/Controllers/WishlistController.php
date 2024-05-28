@@ -13,7 +13,16 @@ class WishlistController extends Controller
     public function index(Request $request)
     {
         $user = Auth::user();
-        $wishlist = Wishlist::with('products')->where('user_id', $user->id)->first();
+        $wishlist = Wishlist::with(['products.images' => function($query) {
+            $query->orderBy('created_at', 'asc');
+        }])->where('user_id', $user->id)->first();
+
+        $wishlistProducts = $wishlist->products->map(function($product) {
+            $product->first_image = $product->images->first();
+            return $product;
+        });
+
+        $wishlist->products = $wishlistProducts;
 
         return response()->json($wishlist);
     }
