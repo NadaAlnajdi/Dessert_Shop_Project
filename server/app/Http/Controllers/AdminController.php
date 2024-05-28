@@ -19,7 +19,7 @@ class AdminController extends Controller
         $categoriesCount = Category::count();
 
         $latestProducts = Product::latest()->take(5)->get();
-        $latestOrders = Order::latest()->take(5)->get();
+        $latestOrders = Order::where('status', 'pending')->latest()->take(5)->get();
         $latestUsers = User::latest()->take(5)->get();
 
         return response()->json([
@@ -39,13 +39,13 @@ class AdminController extends Controller
 
     public function getOrders() 
     {
-        $orders = Order::with(['shippingAddress.user:id,first_name,last_name', 'products:title'])->latest()->get();
+        $orders = Order::with(['shippingAddress.user:id,first_name,last_name', 'orderItems.product:id,title'])->latest()->get();
         return response()->json($orders, 200);
     }
 
     public function getOrder($id)
     {
-        $order = Order::with(['shippingAddress.user:id,first_name,last_name', 'products:title'])->find($id);
+        $order = Order::with(['shippingAddress.user:id,first_name,last_name', 'orderItems.product:id,title'])->find($id);
 
         if (!$order) {
             return response()->json(['message' => 'Order not found'], 404);
