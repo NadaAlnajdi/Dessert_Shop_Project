@@ -15,7 +15,7 @@ class ProductController extends Controller
         $products = Product::with('category', 'images')->paginate(10);
         return response()->json($products);
     }
-
+    
     public function store(Request $request)
     {
         $validatedData = $request->validate([
