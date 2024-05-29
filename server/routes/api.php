@@ -10,6 +10,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\PromotionController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CartController;
 
 

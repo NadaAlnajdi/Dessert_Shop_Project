@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CurrencyPipe } from '@angular/common';
@@ -7,7 +7,7 @@ import { CurrencyPipe } from '@angular/common';
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [CommonModule, CurrencyPipe],
+  imports: [CommonModule, CurrencyPipe, HttpClientModule],
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.css']
 })
