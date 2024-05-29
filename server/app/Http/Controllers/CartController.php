@@ -5,94 +5,69 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Cart;
 use App\Models\CartItem;
-use App\Models\Product;
 
 class CartController extends Controller
 {
-    public function viewCart($userId)
+    // Display a listing of the carts.
+    public function index()
     {
-        $cart = Cart::with('cartItems.product.promotions')->where('user_id', $userId)->first();
-        if (!$cart) {
-            return response()->json(['message' => 'Cart not found'], 404);
-        }
-
-        $prices = $cart->calculatePrices();
-
-        return response()->json(['cart' => $cart, 'subtotal' => $prices['subtotal'], 'total_price' => $prices['total']], 200);
+        $carts = Cart::all();
+        return response()->json($carts);
     }
 
-    public function addToCart(Request $request)
+    // Store a newly created cart in storage.
+    public function store(Request $request)
     {
         $validatedData = $request->validate([
             'user_id' => 'required|exists:users,id',
-            'product_id' => 'required|exists:products,id',
-            'quantity' => 'required|integer|min:1',
         ]);
 
-        $product = Product::find($validatedData['product_id']);
-        if (!$product) {
-            return response()->json(['message' => 'Product not found'], 404);
-        }
+        $cart = Cart::create($validatedData);
 
-        $cart = Cart::firstOrCreate(['user_id' => $validatedData['user_id']]);
-        $cartItem = $cart->cartItems()->updateOrCreate(
-            ['product_id' => $validatedData['product_id']],
-            ['quantity' => $validatedData['quantity'], 'price' => $product->price]
-        );
-
-        $prices = $cart->calculatePrices();
-
-        return response()->json(['cart' => $cart->load('cartItems.product.promotions'), 'subtotal' => $prices['subtotal'], 'total_price' => $prices['total']], 200);
+        return response()->json($cart, 201);
     }
 
-    public function increaseQuantity($id)
+    // Display the specified cart.
+    public function show($id)
     {
-        $cartItem = CartItem::find($id);
-        if (!$cartItem) {
-            return response()->json(['message' => 'Cart item not found'], 404);
-        }
-
-        $cartItem->quantity += 1;
-        $cartItem->save();
-
-        $cart = $cartItem->cart;
-        $prices = $cart->calculatePrices();
-
-        return response()->json(['message' => 'Quantity increased', 'cart' => $cart->load('cartItems.product.promotions'), 'subtotal' => $prices['subtotal'], 'total_price' => $prices['total']], 200);
+        $cart = Cart::findOrFail($id);
+        return response()->json($cart);
     }
 
-    public function decreaseQuantity($id)
+    // Update the specified cart in storage.
+    public function update(Request $request, $id)
     {
-        $cartItem = CartItem::find($id);
-        if (!$cartItem) {
-            return response()->json(['message' => 'Cart item not found'], 404);
-        }
+        $validatedData = $request->validate([
+            'user_id' => 'required|exists:users,id',
+        ]);
 
-        if ($cartItem->quantity > 1) {
-            $cartItem->quantity -= 1;
-            $cartItem->save();
-        } else {
-            $cartItem->delete();
-        }
+        $cart = Cart::findOrFail($id);
+        $cart->update($validatedData);
 
-        $cart = $cartItem->cart;
-        $prices = $cart->calculatePrices();
-
-        return response()->json(['message' => 'Quantity decreased', 'cart' => $cart->load('cartItems.product.promotions'), 'subtotal' => $prices['subtotal'], 'total_price' => $prices['total']], 200);
+        return response()->json($cart, 200);
     }
 
-    public function removeItem($id)
+    // Remove the specified cart from storage.
+    public function destroy($id)
     {
-        $cartItem = CartItem::find($id);
-        if (!$cartItem) {
-            return response()->json(['message' => 'Cart item not found'], 404);
+        $cart = Cart::findOrFail($id);
+        $cart->delete();
+
+        return response()->json(null, 204);
+    }
+
+    public function removeItem($cartId, $itemId)
+    {
+        $cart = Cart::findOrFail($cartId);
+        $cartItem = CartItem::findOrFail($itemId);
+
+        // Check if the cart item belongs to the specified cart
+        if ($cartItem->cart_id !== $cart->id) {
+            return response()->json(['message' => 'Cart item does not belong to the specified cart'], 404);
         }
 
-        $cart = $cartItem->cart;
         $cartItem->delete();
 
-        $prices = $cart->calculatePrices();
-
-        return response()->json(['message' => 'Item removed', 'cart' => $cart->load('cartItems.product.promotions'), 'subtotal' => $prices['subtotal'], 'total_price' => $prices['total']], 200);
+        return response()->json(['message' => 'Cart item removed successfully'], 200);
     }
 }

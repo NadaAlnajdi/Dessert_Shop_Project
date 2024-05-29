@@ -1,43 +1,30 @@
-<div *ngIf="cart">
+<div *ngIf="cart && cart.cart_items && cart.cart_items.length > 0">
   <table>
     <thead>
       <tr>
         <th>Product</th>
         <th>Quantity</th>
-        <th>Price (Before Discount)</th>
         <th>Total Price</th>
         <th>Remove</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let item of cart.cartItems">
-        <td>
-          <img [src]="item.product.image_url" alt="{{ item.product.title }}" width="50">
-          {{ item.product.title }}
-        </td>
-        <td>
-          <button (click)="decreaseQuantity(item.id)">-</button>
-          {{ item.quantity }}
-          <button (click)="increaseQuantity(item.id)">+</button>
-        </td>
-        <td>
-          {{ item.product.price | currency }}
-        </td>
-        <td>
-          {{ (item.product.promotions.length > 0 
-                ? (item.product.price - (item.product.price * (item.product.promotions[0].discount / 100))) 
-                : item.product.price) * item.quantity | currency }}
-        </td>
-        <td>
-          <button (click)="removeItem(item.id)">Remove</button>
-        </td>
+      <tr *ngFor="let item of cart.cart_items">
+        <td>{{ item.product.title }}</td>
+        <td>{{ item.quantity }}  <button (click)="decreaseQuantity(item.cart_id)">-</button>
+    {{ item.quantity }}
+    <button (click)="increaseQuantity(item.cart_id)">+</button></td>
+        <td>{{ item.price | currency }}</td>
+        <td><button (click)="removeItem(item.product.id)">Remove</button></td>
       </tr>
     </tbody>
   </table>
-
   <div>
     <p>Subtotal: {{ subtotal | currency }}</p>
     <p>Total Price: {{ totalPrice | currency }}</p>
     <button (click)="proceedToCheckout()">Proceed to Checkout</button>
   </div>
+</div>
+<div *ngIf="!cart || !cart.cart_items || cart.cart_items.length === 0">
+  <p>Your cart is empty</p>
 </div>

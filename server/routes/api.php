@@ -88,9 +88,5 @@ Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function ()
     Route::get('users', [AdminController::class,'getUsers']);
 });
 
-Route::post('/cart/add', [CartController::class, 'addToCart']);
-Route::delete('/cart/remove/{id}', [CartController::class, 'removeFromCart']);
-Route::get('/cart/{userId}', [CartController::class, 'viewCart']);
-Route::put('/cart/item/{id}/increase', [CartController::class, 'increaseQuantity']);
-Route::put('/cart/item/{id}/decrease', [CartController::class, 'decreaseQuantity']);
-
+Route::apiResource('carts', CartController::class);
+Route::delete('/carts/{cartId}/items/{itemId}', [CartController::class, 'removeItem']);
