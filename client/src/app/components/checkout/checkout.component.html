@@ -1,95 +1,73 @@
 <div class="container">
-    <h1 class="mt-5">Checkout</h1>
-    <div class="row mt-4">
-      <div class="col-md-8">
-        <h3>Billing Details</h3>
-        <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
-            <div class="row">
-              <div class="col">
-                <div class="form-group">
-                  <label for="name">Name*</label>
-                  <input type="text" class="form-control" id="name" formControlName="name" placeholder="Name">
-                </div>
-              </div>
-            </div>
-            <div formGroupName="address">
-                <div class="mb-3">
-                  <label for="country" class="form-label">Country*</label>
-                  <input type="text" id="country" class="form-control" formControlName="country">
-                  <div *ngIf="checkoutForm.get('address.country')?.invalid && checkoutForm.get('address.country')?.touched" class="text-danger">
-                    Country is required
-                  </div>
-                </div>
-                <div class="row mb-3">
-                  <div class="col">
-                    <label for="city" class="form-label">City*</label>
-                    <input type="text" id="city" class="form-control" formControlName="city">
-                    <div *ngIf="checkoutForm.get('address.city')?.invalid && checkoutForm.get('address.city')?.touched" class="text-danger">
-                      City is required
-                    </div>
-                  </div>
-                  <div class="col">
-                    <label for="state" class="form-label">State*</label>
-                    <input type="text" id="state" class="form-control" formControlName="state">
-                    <div *ngIf="checkoutForm.get('address.state')?.invalid && checkoutForm.get('address.state')?.touched" class="text-danger">
-                      State is required
-                    </div>
-                  </div>
-                </div>
-                <div class="mb-3">
-                  <label for="street" class="form-label">Street*</label>
-                  <input type="text" id="street" class="form-control" formControlName="street">
-                  <div *ngIf="checkoutForm.get('address.street')?.invalid && checkoutForm.get('address.street')?.touched" class="text-danger">
-                    Street is required
-                  </div>
-                </div>
-                <div class="mb-3">
-                  <label for="phoneNumber" class="form-label">Phone Number*</label>
-                  <input type="text" id="phoneNumber" class="form-control" formControlName="phoneNumber">
-                  <div *ngIf="checkoutForm.get('address.phoneNumber')?.invalid && checkoutForm.get('address.phoneNumber')?.touched" class="text-danger">
-                    Phone Number is required and should contain only numbers
-                  </div>
-                </div>
-              </div>
-  
-            <button type="submit" class="btn btn-primary mt-3">Place Order</button>
-          </form>
-          
-    
-      </div>
-      <div class="col-md-4">
-        <div class="card">
-          <div class="card-body">
-            <h3>Your Order</h3>
-            <ul class="list-group">
-              <li class="list-group-item d-flex justify-content-between align-items-center">
-                Vanilla salted caramel
-                <span>$300.00</span>
-              </li>
-              <li class="list-group-item d-flex justify-content-between align-items-center">
-                German chocolate
-                <span>$170.00</span>
-              </li>
-              <li class="list-group-item d-flex justify-content-between align-items-center">
-                Sweet autumn
-                <span>$170.00</span>
-              </li>
-              <li class="list-group-item d-flex justify-content-between align-items-center">
-                Gluten free mini dozen
-                <span>$110.00</span>
-              </li>
-              <li class="list-group-item d-flex justify-content-between align-items-center font-weight-bold">
-                Subtotal
-                <span>$750.00</span>
-              </li>
-              <li class="list-group-item d-flex justify-content-between align-items-center font-weight-bold">
-                Total
-                <span>$750.99</span>
-              </li>
-            </ul>
+  <h1 class="mt-5">Checkout</h1>
+  <div class="row mt-4">
+    <div class="col-md-8">
+      <h3>Billing Details</h3>
+      <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <h3>Shipping Address*</h3>
+          <div *ngFor="let address of shippingAddresses">
+            <input type="radio" [value]="address.id" formControlName="shipping_address_id"> {{ address.street }}, {{ address.city }}, {{ address.state }} - {{ address.phone_number }}
           </div>
+          <input type="radio" value="" formControlName="shipping_address_id"> New Address
+        </div>
+        <div formGroupName="shipping_address" *ngIf="checkoutForm.get('shipping_address_id')?.value === ''">
+
+          <div class="row mb-3">
+            <div class="col">
+              <label for="city" class="form-label">City*</label>
+              <input type="text" id="city" class="form-control" formControlName="city">
+            </div>
+            <div class="col">
+              <label for="state" class="form-label">State*</label>
+              <input type="text" id="state" class="form-control" formControlName="state">
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="street" class="form-label">Street*</label>
+            <input type="text" id="street" class="form-control" formControlName="street">
+          </div>
+          <div class="mb-3">
+            <label for="phoneNumber" class="form-label">Phone Number*</label>
+            <input type="text" id="phoneNumber" class="form-control" formControlName="phoneNumber">
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-3">Place Order</button>
+      </form>
+    </div>
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-body">
+          <h3>Your Order</h3>
+          <ul class="list-group">
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              Vanilla salted caramel
+              <span>$300.00</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              German chocolate
+              <span>$170.00</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              Sweet autumn
+              <span>$170.00</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              Gluten free mini dozen
+              <span>$110.00</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center font-weight-bold">
+              Subtotal
+              <span>$750.00</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center font-weight-bold">
+              Total
+              <span>$750.99</span>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
   </div>
-  
+</div>
