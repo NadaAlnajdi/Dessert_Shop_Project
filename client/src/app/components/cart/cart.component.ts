@@ -1,70 +1,57 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CurrencyPipe } from '@angular/common';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { CartItem, CartService } from '../../services/cart.servics';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-cart',
-  imports:[CommonModule,CurrencyPipe],
-  standalone:true,
+  standalone: true,
+  imports: [RouterLink, CommonModule],
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.css']
 })
-export class CartComponent implements OnInit {
-  cart: any = { cart_items: [] }; // Initialize with empty cart_items array
-  subtotal: number = 0;
+export class CartComponent implements OnInit, OnDestroy {
+  sub: Subscription | null = null;
+  cart_id: any = localStorage.getItem('cart_id');    
+  user_id: number = parseInt(localStorage.getItem('id')!, 10);  
+  cart: CartItem[] = [];
   totalPrice: number = 0;
 
-  constructor(private http: HttpClient) {
-    console.log('CartComponent instantiated');
+  constructor(private activatedRoute: ActivatedRoute, private cartService: CartService) {}
+
+  ngOnInit(): void {
+    this.sub = this.cartService.getCartByUserId(this.user_id).subscribe(items => {
+      this.sub = this.cartService.getCartItems(this.cart_id).subscribe(items => {
+        this.cart = items;
+        this.calculateTotalPrice();
+      });
+    });
+  } 
+
+  ngOnDestroy(): void {
+    this.sub?.unsubscribe();
   }
 
-  ngOnInit() {
-    console.log('CartComponent ngOnInit');
-    this.getCart();
+  calculateTotalPrice(): void {
+    this.totalPrice = this.cart.reduce((total, item) => {
+      if (item.product) {
+        return total + (item.product.price * item.quantity);
+      }
+      return total;
+    }, 0);
   }
 
-  getCart() {
-    const userId = 1; // Replace with the actual user ID
-    this.http.get(`/api/cart/${userId}`).subscribe({
-      next: (data: any) => {
-        console.log('Cart data received:', JSON.stringify(data, null, 2));
-        this.cart = data.cart;
-        this.subtotal = data.subtotal;
-        this.totalPrice = data.total_price;
-        console.log('Cart items:', this.cart.cart_items); // Debug log
+  removeFromCart(cartItemId: number): void {
+    this.cartService.deleteCartItem(cartItemId).subscribe({
+      next: () => {
+        this.cart = this.cart.filter(item => item.id !== cartItemId);
+        console.log('Item has been deleted.');
+        this.calculateTotalPrice();
       },
-      error: (error) => {
-        console.error('Error fetching cart:', error);
+      error: (err) => {
+        console.error('Error deleting item:', err);
       }
     });
-  }
-
-  increaseQuantity(cartItemId: number) {
-    this.http.put(`/api/cart/item/${cartItemId}/increase`, {}).subscribe((data: any) => {
-      this.cart = data.cart;
-      this.subtotal = data.subtotal;
-      this.totalPrice = data.total_price;
-    });
-  }
-
-  decreaseQuantity(cartItemId: number) {
-    this.http.put(`/api/cart/item/${cartItemId}/decrease`, {}).subscribe((data: any) => {
-      this.cart = data.cart;
-      this.subtotal = data.subtotal;
-      this.totalPrice = data.total_price;
-    });
-  }
-
-  removeItem(cartItemId: number) {
-    this.http.delete(`/api/cart/item/${cartItemId}`).subscribe((data: any) => {
-      this.cart = data.cart;
-      this.subtotal = data.subtotal;
-      this.totalPrice = data.total_price;
-    });
-  }
-
-  proceedToCheckout() {
-    // Implement checkout logic
   }
 }
