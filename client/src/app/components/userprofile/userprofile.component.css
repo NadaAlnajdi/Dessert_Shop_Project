@@ -1,0 +1,60 @@
+.page-content {
+  padding: 3rem;
+}
+
+.user-card-full {
+  overflow: hidden;
+}
+
+.card {
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.bg-c-lite-green {
+  background: #f8e39e;
+}
+
+.user-profile {
+  padding: 20px 0;
+}
+
+.img-radius {
+  border-radius: 50%;
+}
+
+.m-t-10 {
+  margin-top: 10px;
+}
+
+.m-b-10 {
+  margin-bottom: 10px;
+}
+
+.m-b-20 {
+  margin-bottom: 20px;
+}
+
+.m-t-40 {
+  margin-top: 40px;
+}
+
+.p-b-5 {
+  padding-bottom: 5px;
+}
+
+.b-b-default {
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.f-w-600 {
+  font-weight: 600;
+}
+
+.f-w-400 {
+  font-weight: 400;
+}
+
+.text-muted {
+  color: #6c757d;
+}
