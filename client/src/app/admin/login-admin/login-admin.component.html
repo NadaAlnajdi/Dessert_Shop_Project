@@ -1,0 +1,76 @@
+
+<section class="">
+    <div class="container mt-5 mb-5">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-lg-12 col-xl-11">
+          <div class="card text-black" style="border-radius: 25px;">
+            <div class="card-body p-md-5">
+              <div class="row justify-content-center">
+                <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
+                  <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Log in</p>
+  
+  <form [formGroup]="adminLogin" (ngSubmit)="handleSubmitForm()">
+  
+  
+  
+      <div class="mb-3">
+        <label for="userName" class="form-label">User Name</label>
+        <input type="text" class="form-control" id="userName"
+        formControlName="userName"
+        >
+        
+  
+        
+    
+        @if(adminLogin.controls['userName'].invalid && adminLogin.controls['userName'].touched){
+          @if(adminLogin.controls['userName'].errors?.['required']){
+            <small>You must enter your user name</small>
+          }
+          @if(adminLogin.controls['userName'].errors?.['maxLength']){
+            <small>Do not enter more than 30 charachters</small>
+          }
+        }
+      </div>
+      
+    
+    
+      <div class="mb-3">
+        <label for="exampleInputPassword1" class="form-label">Password</label>
+        <input type="password" class="form-control" id="exampleInputPassword1"
+        formControlName="password"
+        >
+    
+        @if(adminLogin.controls['password'].invalid && adminLogin.controls['password'].touched){
+          @if(adminLogin.controls['password'].errors?.['required']){
+            <small>You must enter your password</small>
+          }
+          @if(adminLogin.controls['password'].errors?.['maxlength']){
+            <small>Do not enter more than 50 charachters 😒</small>
+          }
+        }
+    
+    
+      </div>
+      
+      
+      
+      <button type="button" class="btn btn-primary" (click)="redirectToAdminDashBoard()" [disabled]="adminLogin.invalid">Submit</button>
+    </form>
+  
+  </div>
+  <div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
+  
+    <img src="https://basmo.app/wp-content/uploads/2021/07/how-many-books-does-the-average-person-read.gif"
+      class="img-fluid" alt="Sample image">
+  
+  </div>
+  </div>
+  </div>
+  </div>
+  </div>
+  </div>
+  </div>
+  </section>
+  
+  
+  
