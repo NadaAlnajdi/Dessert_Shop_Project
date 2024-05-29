@@ -10,22 +10,7 @@ import { WishlistService } from '../../services/wishlist.service';
   styleUrl: './wishlist.component.css'
 })
 export class WishlistComponent implements OnInit {
-  wishlistProducts: any[] = [
-    {
-      image:'https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg',
-      Name:'nada',
-      Price:'200',
-      stock_quantity:2
-    },
-    {
-      image:'https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg',
-      Name:'nada',
-      Price:'200',
-      stock_quantity:0
-    }
-
-
-  ];
+  wishlistProducts: any[] = [];
 
   constructor(private wishlistService: WishlistService) { }
 
@@ -35,8 +20,10 @@ export class WishlistComponent implements OnInit {
 
   getWishlist(): void {
     this.wishlistService.getWishlist().subscribe(
-      (data: any[]) => {
-        this.wishlistProducts = data;
+      (data: any) => {
+        console.log(data?.products);
+        
+        this.wishlistProducts = data?.products;
       },
       (error:any) => {
         console.error('Error fetching wishlist', error);
@@ -47,7 +34,8 @@ export class WishlistComponent implements OnInit {
   removeProduct(productId: number): void {
     this.wishlistService.removeFromWishlist(productId).subscribe(
       () => {
-        this.wishlistProducts = this.wishlistProducts.filter(product => product.id !== productId);
+        this.getWishlist()
+
       },
       (error:any) => {
         console.error('Error removing product from wishlist', error);

@@ -52,3 +52,18 @@
 .btn-close:hover {
   color: #000;
 }
+
+.remove-product{
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid gray;
+  text-align: center;
+}
+.remove-product:hover{
+  background-color: rgb(202, 53, 53);
+}
+.remove-product:hover span{
+  color: white;
+}
+.remove-product span{font-size: 20px;}

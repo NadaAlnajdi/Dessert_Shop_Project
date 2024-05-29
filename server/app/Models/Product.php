@@ -30,19 +30,15 @@ class Product extends Model
         return $this->belongsTo(Category::class);
     }
 
-  
     public function wishlist()
     {
         return $this->belongsToMany(Wishlist::class);
     }
 
-
     public function images()
     {
         return $this->hasMany(ProductImage::class);
     }
-
-
 
     public function promotions()
     {

@@ -24,7 +24,7 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'name' => 'required',
+            'name' => 'required|string',
             'description' => 'nullable|string',
         ]);
 
@@ -40,7 +40,7 @@ class CategoryController extends Controller
             return response()->json(['message' => 'Category not found'], 404);
         }
         $validatedData = $request->validate([
-            'name' => 'sometimes|required',
+            'name' => 'sometimes|required|string',
             'description' => 'nullable|string',
         ]);
 

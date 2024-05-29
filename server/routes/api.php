@@ -1,16 +1,23 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\ForgetPasswordController;
+use App\Http\Controllers\Auth\PasswordResetController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrderController;
-use App\Http\Controllers\Auth\PasswordResetController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\PromotionController;
+use App\Http\Controllers\AdminController;
+
+use App\Http\Controllers\ShippingAddressController;
+
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\CartItemController;
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -36,12 +43,35 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('wishlists', [WishlistController::class, 'index']);
     Route::post('wishlists', [WishlistController::class, 'store']);
     Route::delete('wishlists/{product_id}', [WishlistController::class, 'destroy']);
+    // Wishlist routes    // Checkout routes
+    Route::post('/checkout', [OrderController::class, 'checkout']);
+    Route::get('/orders', [OrderController::class, 'getOrders']);
+    Route::delete('/orders/{id}', [OrderController::class, 'cancelOrder']);
+    Route::patch('/orders/{id}/status', [OrderController::class, 'updateOrderStatus']);
+
+    // User profile routes
+    Route::get('profile/{id}', [UserController::class, 'show']);
+    Route::post('profile/{id}', [UserController::class, 'update']);
+    Route::post('profile/password/{id}', [UserController::class, 'updatePassword']);
+
+    Route::delete('/user/{id}', [UserController::class, 'deleteAccount']);
+
+    Route::get('/orders/{id}', [OrderController::class, 'show']);
+    Route::post('/orders/{id}', [OrderController::class, 'cancel']);
+
+    Route::get('wishlists', [WishlistController::class, 'index']);
+    Route::post('wishlists', [WishlistController::class, 'store']);
+    Route::delete('wishlists/{product_id}', [WishlistController::class, 'destroy']);
 
     // Checkout routes
     Route::post('/checkout', [OrderController::class, 'checkout']);
     Route::get('/orders', [OrderController::class, 'getOrders']);
     Route::delete('/orders/{id}', [OrderController::class, 'cancelOrder']);
     Route::patch('/orders/{id}/status', [OrderController::class, 'updateOrderStatus']);
+
+    //shipping address routes
+    Route::get('shipping-address', [ShippingAddressController::class, 'index']);
+    Route::post('shipping-address', [ShippingAddressController::class, 'store']);
 
     // User profile routes
     Route::get('profile/{id}', [UserController::class, 'show']);
@@ -59,4 +89,21 @@ Route::apiResource('categories', CategoryController::class);
 // Admin routes
 Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function () {
     Route::apiResource('promotions', PromotionController::class);
+    Route::get('dashboard', [AdminController::class, 'overview']);
+    Route::get('orders', [AdminController::class, 'getOrders']);
+    Route::get('orders/{id}', [AdminController::class, 'getOrder']);
+    Route::put('orders/{id}', [AdminController::class, 'updateOrderStatus']);
+    Route::get('users', [AdminController::class,'getUsers']);
 });
+
+    Route::get('/carts', [CartController::class, 'index']);
+    Route::post('/carts', [CartController::class, 'store']);
+    Route::get('/carts/{user_id}', [CartController::class, 'show']);
+    Route::put('/carts/{id}', [CartController::class, 'update']);
+    Route::delete('/carts/{id}', [CartController::class, 'destroy']);
+
+    Route::get('/cart-items', [CartItemController::class, 'index']);
+    Route::post('/cart-items', [CartItemController::class, 'store']);
+    Route::get('/cart-items/{user_id}', [CartItemController::class, 'show']);
+    Route::put('/cart-items/{id}', [CartItemController::class, 'update']);
+    Route::delete('/cart-items/{id}', [CartItemController::class, 'destroy']);

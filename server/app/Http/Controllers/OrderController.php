@@ -17,26 +17,31 @@ class OrderController extends Controller
 
         // Validate the request data for creating an order
         $request->validate([
-            'shipping_address.city' => 'required|string',
-            'shipping_address.state' => 'required|string',
-            'shipping_address.street' => 'required|string',
-            'shipping_address.phone_number' => 'required|string',
             'order_items' => 'required|array',
             'order_items.*.product_id' => 'required|exists:products,id',
             'order_items.*.quantity' => 'required|integer|min:1',
             'order_items.*.price' => 'required|numeric|min:0',
+            'shipping_address_id' => 'nullable|exists:shipping_addresses,id', // Allow existing shipping address ID
+            'shipping_address.city' => 'nullable|string',
+            'shipping_address.state' => 'nullable|string',
+            'shipping_address.street' => 'nullable|string',
+            'shipping_address.phone_number' => 'nullable|string',
         ]);
-
-        // Check if user has an existing shipping address
-        $shippingAddress = $user->shippingAddresses()->firstOrCreate([
-            'city' => $request->shipping_address['city'],
-            'state' => $request->shipping_address['state'],
-            'street' => $request->shipping_address['street'],
-            'phone_number' => $request->shipping_address['phone_number'],
-        ], [
-            'user_id' => $user->id
-        ]);
-
+    
+        // Determine the shipping address ID
+        if ($request->filled('shipping_address_id')) {
+            // Use existing shipping address ID
+            $shippingAddressId = $request->shipping_address_id;
+        } else {
+            // Create new shipping address
+            $shippingAddress = $user->shippingAddresses()->create([
+                'city' => $request->shipping_address['city'],
+                'state' => $request->shipping_address['state'],
+                'street' => $request->shipping_address['street'],
+                'phone_number' => $request->shipping_address['phone_number'],
+            ]);
+            $shippingAddressId = $shippingAddress->id;
+        }
         // Calculate total price for the order
         $totalPrice = array_reduce($request->order_items, function ($sum, $item) {
             return $sum + ($item['price'] * $item['quantity']);
@@ -46,7 +51,7 @@ class OrderController extends Controller
         $order = new Order();
         $order->user_id = $user->id;
         $order->total_price = $totalPrice;
-        $order->shipping_address_id = $shippingAddress->id;
+        $order->shipping_address_id = $shippingAddressId;
         $order->status = 'pending';
         $order->save();
 

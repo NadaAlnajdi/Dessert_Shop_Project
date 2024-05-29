@@ -6,8 +6,6 @@ use Illuminate\Http\Request;
 use App\Models\Wishlist;
 use Illuminate\Support\Facades\Auth;
 
-
-
 class WishlistController extends Controller
 {
     public function index(Request $request)
@@ -28,19 +26,15 @@ class WishlistController extends Controller
     }
 
     public function store(Request $request)
-    
+    {
+        $user = Auth::user();
+        $wishlist = Wishlist::firstOrCreate(['user_id' => $user->id]);
 
-        {
-            $user = Auth::user();
-            $wishlist = Wishlist::firstOrCreate(['user_id' => $user->id]);
-    
-            $wishlist->products()->attach($request->product_id);
-    
-            return response()->json(['message' => 'Product added to wishlist successfully']);
-        }
-    
-    
+        $wishlist->products()->attach($request->product_id);
 
+        return response()->json(['message' => 'Product added to wishlist successfully']);
+    }
+    
     public function destroy(Request $request, $product_id)
     {
         $user = Auth::user();
