@@ -11,6 +11,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\PromotionController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ShippingAddressController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,6 +52,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/orders', [OrderController::class, 'getOrders']);
     Route::delete('/orders/{id}', [OrderController::class, 'cancelOrder']);
     Route::patch('/orders/{id}/status', [OrderController::class, 'updateOrderStatus']);
+
+    //shipping address routes
+    Route::get('shipping-address', [ShippingAddressController::class, 'index']);
+    Route::post('shipping-address', [ShippingAddressController::class, 'store']);
 
     // User profile routes
     Route::get('profile/{id}', [UserController::class, 'show']);
