@@ -15,15 +15,16 @@ class ProductController extends Controller
         $products = Product::with('category', 'images')->paginate(10);
         return response()->json($products);
     }
-
+    
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'title' => 'required',
+            'title' => 'required|string',
             'price' => 'required|numeric|min:1',
             'description' => 'nullable|string',
             'stock_quantity' => 'required|integer|min:0',
             'category_id' => 'required|exists:categories,id',
+            'images' => 'required|array',
             'images.*' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
@@ -38,9 +39,10 @@ class ProductController extends Controller
 
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
-                $path = $image->store('uploads', 'public');
+                $folderPath = 'public/uploads/' . $validatedData['slug'];
+                $path = $image->store($folderPath);
                 ProductImage::create([
-                    'path' => 'uploads/' . $path,
+                    'path' => $path,
                     'product_id' => $product->id,
                 ]);
             }
@@ -57,7 +59,7 @@ class ProductController extends Controller
         }
 
         $validatedData = $request->validate([
-            'title' => 'sometimes|required',
+            'title' => 'sometimes|required|string',
             'price' => 'sometimes|required|numeric|min:1',
             'description' => 'nullable|string',
             'stock_quantity' => 'sometimes|integer|min:0',
@@ -67,6 +69,8 @@ class ProductController extends Controller
 
         if (isset($validatedData['title'])) {
             $validatedData['slug'] = Str::slug($validatedData['title']);
+        } else {
+            $validatedData['slug'] = $product->slug;
         }
 
         $product->update($validatedData);
@@ -80,9 +84,10 @@ class ProductController extends Controller
 
             // Store new images
             foreach ($request->file('images') as $image) {
-                $path = $image->store('uploads', 'public');
+                $folderPath = 'public/uploads/' . $validatedData['slug'];
+                $path = $image->store($folderPath);
                 ProductImage::create([
-                    'path' => 'uploads/' . $path,
+                    'path' => $path,
                     'product_id' => $product->id,
                 ]);
             }

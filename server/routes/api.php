@@ -11,7 +11,13 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\PromotionController;
 use App\Http\Controllers\AdminController;
+
 use App\Http\Controllers\ShippingAddressController;
+
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\CartItemController;
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -34,6 +40,16 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 
     // Wishlist routes
+    Route::get('wishlists', [WishlistController::class, 'index']);
+    Route::post('wishlists', [WishlistController::class, 'store']);
+    Route::delete('wishlists/{product_id}', [WishlistController::class, 'destroy']);
+    // Wishlist routes    // Checkout routes
+    Route::post('/checkout', [OrderController::class, 'checkout']);
+    Route::get('/orders', [OrderController::class, 'getOrders']);
+    Route::delete('/orders/{id}', [OrderController::class, 'cancelOrder']);
+    Route::patch('/orders/{id}/status', [OrderController::class, 'updateOrderStatus']);
+
+    // User profile routes
     Route::get('profile/{id}', [UserController::class, 'show']);
     Route::post('profile/{id}', [UserController::class, 'update']);
     Route::post('profile/password/{id}', [UserController::class, 'updatePassword']);
@@ -79,3 +95,15 @@ Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function ()
     Route::put('orders/{id}', [AdminController::class, 'updateOrderStatus']);
     Route::get('users', [AdminController::class,'getUsers']);
 });
+
+    Route::get('/carts', [CartController::class, 'index']);
+    Route::post('/carts', [CartController::class, 'store']);
+    Route::get('/carts/{user_id}', [CartController::class, 'show']);
+    Route::put('/carts/{id}', [CartController::class, 'update']);
+    Route::delete('/carts/{id}', [CartController::class, 'destroy']);
+
+    Route::get('/cart-items', [CartItemController::class, 'index']);
+    Route::post('/cart-items', [CartItemController::class, 'store']);
+    Route::get('/cart-items/{user_id}', [CartItemController::class, 'show']);
+    Route::put('/cart-items/{id}', [CartItemController::class, 'update']);
+    Route::delete('/cart-items/{id}', [CartItemController::class, 'destroy']);
