@@ -1,0 +1,126 @@
+<section class="">
+  <div class="container mt-5 mb-5">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-lg-12 col-xl-11">
+        <div class="card text-black" style="border-radius: 25px;">
+          <div class="card-body p-md-5">
+            <div class="row justify-content-center">
+              <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
+                <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Sign up</p>
+                <form [formGroup]="signupForm" class="mx-1 mx-md-4">
+                  <div class="mb-3">
+                    <label for="first_name" class="form-label">First Name</label>
+                    <input type="text" class="form-control" id="first_name" formControlName="first_name">
+                    <div *ngIf="signupForm.controls['first_name'].invalid && signupForm.controls['first_name'].touched">
+                      <div *ngIf="signupForm.controls['first_name'].errors?.['required']">
+                        <small>You must enter your first name</small>
+                      </div>
+                      <div *ngIf="signupForm.controls['first_name'].errors?.['pattern']">
+                        <small>You must enter only alphabetics</small>
+                      </div>
+                      <div *ngIf="signupForm.controls['first_name'].errors?.['maxlength']">
+                        <small>Do not enter more than 200 characters 😒</small>
+                      </div>
+                      <div *ngIf="signupForm.controls['first_name'].errors?.['minlength']">
+                        <small>Your first name is less than 2 characters! 🤨</small>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="last_name" class="form-label">Last Name</label>
+                    <input type="text" class="form-control" id="last_name" formControlName="last_name">
+                    <div *ngIf="signupForm.controls['last_name'].invalid && signupForm.controls['last_name'].touched">
+                      <div *ngIf="signupForm.controls['last_name'].errors?.['required']">
+                        <small>You must enter your last name</small>
+                      </div>
+                      <div *ngIf="signupForm.controls['last_name'].errors?.['pattern']">
+                        <small>You must enter only alphabetics</small>
+                      </div>
+                      <div *ngIf="signupForm.controls['last_name'].errors?.['maxlength']">
+                        <small>Do not enter more than 200 characters 😒</small>
+                      </div>
+                      <div *ngIf="signupForm.controls['last_name'].errors?.['minlength']">
+                        <small>Your last name is less than 2 characters! 🤨</small>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" formControlName="email" placeholder="name@example.com">
+                    <div *ngIf="errorMessage?.includes('Email')">
+                      <small>{{ errorMessage }}</small>
+                    </div>
+                    <div *ngIf="signupForm.controls['email'].invalid && signupForm.controls['email'].touched">
+                      <div *ngIf="signupForm.controls['email'].errors?.['required']">
+                        <small>You must enter your email</small>
+                      </div>
+                      <div *ngIf="signupForm.controls['email'].errors?.['email']">
+                        <small>Enter a valid email 🙂</small>
+                      </div>
+                      <div *ngIf="signupForm.controls['email'].errors?.['maxlength']">
+                        <small>Do not enter more than 200 characters 😒</small>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" formControlName="password">
+                    <div *ngIf="signupForm.controls['password'].invalid && signupForm.controls['password'].touched">
+                      <div *ngIf="signupForm.controls['password'].errors?.['required']">
+                        <small>You must enter your password</small>
+                      </div>
+                      <div *ngIf="signupForm.controls['password'].errors?.['pattern']">
+                        <small>Your password must contain at least one uppercase letter, one lowercase letter, and one number 😒</small>
+                      </div>
+                      <div *ngIf="signupForm.controls['password'].errors?.['maxlength']">
+                        <small>Do not enter more than 50 characters 😒</small>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="confirmPassword" class="form-label">Confirm Password</label>
+                    <input type="password" class="form-control" id="confirmPassword" formControlName="confirmPassword">
+                    <div *ngIf="signupForm.controls['confirmPassword'].invalid && signupForm.controls['confirmPassword'].touched">
+                      <div *ngIf="signupForm.controls['confirmPassword'].errors?.['required']">
+                        <small>You must enter your password confirmation</small>
+                      </div>
+                      <div *ngIf="signupForm.errors?.['passwordNotMatch']">
+                        <small>Your passwords do not match 😒</small>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="gender" class="form-label">Gender</label>
+                    <select class="form-select" id="gender" formControlName="gender">
+                      <option value="">Select</option>
+                      <option value="male">Male</option>
+                      <option value="female">Female</option>
+                    </select>
+                    <div *ngIf="signupForm.controls['gender'].invalid && signupForm.controls['gender'].touched">
+                      <div *ngIf="signupForm.controls['gender'].errors?.['required']">
+                        <small>You must select your gender</small>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="image" class="form-label">Profile Image</label>
+                    <input type="file" class="form-control" id="image" (change)="registerPhoto($event)" formControlName="image">
+                  </div>
+                  <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+                    <button type="button" class="btn btn-primary btn-lg" (click)="signup()">Register</button>
+                  </div>
+                  <div *ngIf="errorMessage">
+                    <small>{{ errorMessage }}</small>
+                  </div>
+                </form>
+              </div>
+              <div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
+                <img src="https://as2.ftcdn.net/v2/jpg/00/55/62/39/1000_F_55623936_cxBP4BEBcratoeh4y6JocHX5DFaI47uX.jpg" class="img-fluid" alt="Sample image">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
