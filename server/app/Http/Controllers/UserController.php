@@ -10,6 +10,7 @@ use App\Models\ShippingAddress;
 
 class UserController extends Controller
 {
+    // Get all registered users (admin dashboard)
     public function index() {
         $users = User::all();
 
@@ -89,7 +90,8 @@ class UserController extends Controller
 
         return response()->json(['message' => 'Account deleted successfully']);
     }
-    
+
+    // Get all orders created by a specific user with the id (admin dashboard)
     public function getUserOrders($id)
     {
         $userWithOrders = User::with(['shippingAddresses.orders.orderItems'])->findOrFail($id);

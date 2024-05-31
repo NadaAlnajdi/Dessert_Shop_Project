@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Product;
 use App\Models\Order;
-use App\Models\Category;
+use App\Models\Promotion;
 
 class AdminController extends Controller
 {
@@ -16,64 +16,22 @@ class AdminController extends Controller
         $usersCount = User::count();
         $productsCount = Product::count();
         $ordersCount = Order::count();
-        $categoriesCount = Category::count();
+        $promotionsCount = Promotion::count();
 
-        $latestProducts = Product::latest()->take(5)->get();
-        $latestOrders = Order::where('status', 'pending')->latest()->take(5)->get();
-        $latestUsers = User::latest()->take(5)->get();
+        $latestProducts = Product::with('category', 'images')->latest()->take(5)->get();
+        $latestOrders = Order::with(['shippingAddress.user:id,first_name,last_name', 'orderItems.product'])->where('status', 'pending')->latest()->take(5)->get();
+        $latestUsers = User::where('role', '!=', 'admin')->latest()->take(5)->get();
+        $latestPromotions = Promotion::with('products')->latest()->take(5)->get();
 
         return response()->json([
             'users_count' => $usersCount,
             'products_count' => $productsCount,
             'orders_count' => $ordersCount,
-            'categories_count' => $categoriesCount,
+            'promotions_count' => $promotionsCount,
             'latest_products' => $latestProducts,
             'latest_orders' => $latestOrders,
             'latest_users' => $latestUsers,
+            'latest_promotions' => $latestPromotions,
         ]);
-    }
-
-    public function getUsers() {
-        return User::all();
-    }
-
-    public function getOrders() 
-    {
-        $orders = Order::with(['shippingAddress.user:id,first_name,last_name', 'orderItems.product:id,title'])->latest()->get();
-        return response()->json($orders, 200);
-    }
-
-    public function getOrder($id)
-    {
-        $order = Order::with(['shippingAddress.user:id,first_name,last_name', 'orderItems.product:id,title'])->find($id);
-
-        if (!$order) {
-            return response()->json(['message' => 'Order not found'], 404);
-        }
-
-        return response()->json($order, 200);
-    }
-
-    public function updateOrderStatus(Request $request, $id)
-    {
-        $validatedData = $request->validate([
-            'status' => 'required|in:accepted,rejected',
-        ]);
-
-        $order = Order::find($id);
-
-        if (!$order) {
-            return response()->json(['message' => 'Order not found'], 404);
-        }
-
-         // Check if the current status is already accepted or rejected
-        if ($order->status === 'accepted' || $order->status === 'rejected') {
-            return response()->json(['message' => 'Order status cannot be updated because it is already accepted or rejected'], 400);
-        }
-
-        $order->status = $validatedData['status'];
-        $order->save();
-
-        return response()->json(['message' => 'Order status updated successfully']);
     }
 }

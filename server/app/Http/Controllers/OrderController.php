@@ -10,6 +10,24 @@ use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
+    // get all orders (admin dashboard)
+    public function index() 
+    {
+        $orders = Order::with(['shippingAddress.user:id,first_name,last_name', 'orderItems.product'])->latest()->get();
+        return response()->json($orders, 200);
+    }
+
+    // get a specific order (admin dashboard)
+    public function show($id)
+    {
+        $order = Order::with(['shippingAddress.user:id,first_name,last_name', 'orderItems.product'])->find($id);
+
+        if (!$order) {
+            return response()->json(['message' => 'Order not found'], 404);
+        }
+
+        return response()->json($order, 200);
+    }
 
     public function checkout(Request $request)
     {
@@ -85,21 +103,28 @@ class OrderController extends Controller
         return response()->json(['message' => 'Order not found or cannot be canceled'], 404);
     }
 
+    // update a specific order status (admin dashboard)
     public function updateOrderStatus(Request $request, $id)
     {
-        $request->validate([
+        $validatedData = $request->validate([
             'status' => 'required|in:accepted,rejected',
         ]);
 
         $order = Order::find($id);
 
-        if ($order) {
-            $order->status = $request->status;
-            $order->save();
-            return response()->json(['message' => 'Order status updated successfully']);
+        if (!$order) {
+            return response()->json(['message' => 'Order not found'], 404);
         }
 
-        return response()->json(['message' => 'Order not found'], 404);
+        // Check if the current status is already accepted or rejected
+        if ($order->status === 'accepted' || $order->status === 'rejected') {
+            return response()->json(['message' => 'Order status cannot be updated because it is already accepted or rejected'], 400);
+        }
+
+        $order->status = $validatedData['status'];
+        $order->save();
+
+        return response()->json(['message' => 'Order status updated successfully']);
     }
 
     public function getOrders()

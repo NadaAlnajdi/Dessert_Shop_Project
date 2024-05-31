@@ -16,12 +16,6 @@ class PromotionController extends Controller
         return PromotionResource::collection($promotions);
     }
 
-    public function getActivePromotions() {
-        $promotions = Promotion::where('is_active', true)->whereDate('end_date', '>', now())->with('products')->orderBy('start_date', 'desc')->get();
-            
-        return PromotionResource::collection($promotions);
-    }
-
     public function show($slug)
     {
         $promotion = Promotion::with('products')->where('slug', $slug)->first();
@@ -76,6 +70,12 @@ class PromotionController extends Controller
         }
         $promotion->delete();
         return response()->json(['message' => 'Promotion deleted'], 200);
+    }
+    
+    public function getActivePromotions() {
+        $promotions = Promotion::where('is_active', true)->whereDate('end_date', '>', now())->with('products')->orderBy('start_date', 'desc')->get();
+            
+        return PromotionResource::collection($promotions);
     }
 }
 
