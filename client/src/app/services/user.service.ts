@@ -4,12 +4,11 @@ import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserService {
-
   private apiUrl = `${environment.apiUrl}/user`;
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   getUserProfile(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}`);
@@ -21,5 +20,9 @@ export class UserService {
 
   cancelOrder(orderId: string): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}${orderId}`);
+  }
+
+  getUserOrders(id: number): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/admin/users/${id}/orders`);
   }
 }
