@@ -1,0 +1,67 @@
+.about-section {
+  padding: 40px 0;
+}
+
+.about__text .section-title .about-title {
+  font-size: 20px;
+  color: #f39c12;
+  text-transform: uppercase;
+}
+
+.about__text .about-heading {
+  font-size: 36px;
+  font-weight: bold;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  font-family: 'Times New Roman', Times, serif;
+}
+
+.about__text .about-description {
+  font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: 0;
+}
+
+.about__bar__item p {
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.progress {
+  background: #e0e0e0;
+  border-radius: 5px;
+  overflow: hidden;
+  height: 20px;
+}
+
+.progress-bar {
+  height: 100%;
+  background:black;
+}
+
+.percentage {
+  font-size: 16px;
+}
+.about__video {
+  margin-bottom: 20px; 
+}
+
+.about__video video {
+  width:600px;
+  height: 400px;
+}
+
+.logo-img {
+  height: 50px;
+}
+
+.nav-links a {
+  margin: 0 10px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.nav-links a:hover {
+  text-decoration: underline;
+}
+

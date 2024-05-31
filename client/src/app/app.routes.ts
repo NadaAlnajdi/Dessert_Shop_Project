@@ -16,11 +16,17 @@ import { CategoryCreateComponent } from './components/categories/category-create
 import { CategoryDeleteComponent } from './components/categories/category-delete/category-delete.component';
 import { CategoryUpdateComponent } from './components/categories/category-update/category-update.component';
 import { ProductDeleteComponent } from './components/product-table/product-delete/product-delete.component';
+import { AboutlayoutComponent } from './components/aboutlayout/aboutlayout.component';
+import {  ContactlayoutComponent  } from './components/contactlayout/contactlayout.component';
+
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'home', component: HomeComponent },
-  { path: 'checkout', component: CheckoutComponent },
+  {path:'about', component:AboutlayoutComponent},
+  {path:'contact', component: ContactlayoutComponent },
+
+{ path: 'checkout', component: CheckoutComponent },
   { path: 'wishlist', component: WishlistComponent },
   { path: 'cart', component: CartComponent },
   { path: 'signup', component: SignupComponent },
