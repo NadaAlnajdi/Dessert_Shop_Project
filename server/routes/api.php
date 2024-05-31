@@ -37,8 +37,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('profile/{id}', [UserController::class, 'update']);
     Route::post('profile/password/{id}', [UserController::class, 'updatePassword']);
 
-    Route::delete('/user/{id}', [UserController::class, 'deleteAccount']);
-
     Route::get('/orders/{id}', [OrderController::class, 'show']);
     Route::post('/orders/{id}', [OrderController::class, 'cancel']);
 
@@ -67,10 +65,13 @@ Route::apiResource('categories', CategoryController::class);
 
 // Admin routes
 Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function () {
-    Route::apiResource('promotions', PromotionController::class);
     Route::get('dashboard', [AdminController::class, 'overview']);
-    Route::get('orders', [AdminController::class, 'getOrders']);
-    Route::get('orders/{id}', [AdminController::class, 'getOrder']);
-    Route::put('orders/{id}', [AdminController::class, 'updateOrderStatus']);
-    Route::get('users', [AdminController::class,'getUsers']);
+    Route::apiResource('products', ProductController::class);
+    Route::apiResource('categories', CategoryController::class);
+    Route::apiResource('promotions', PromotionController::class);
+    Route::get('orders', [OrderController::class, 'index']);
+    Route::get('orders/{id}', [OrderController::class, 'show']);
+    Route::put('orders/{id}', [OrderController::class, 'updateOrderStatus']);
+    Route::get('users', [UserController::class,'index']);
+    Route::get('users/{id}/orders', [UserController::class,'getUserOrders']);
 });
