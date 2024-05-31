@@ -38,8 +38,10 @@ export class LoginComponent {
     console.log('Login Data:', loginData); // Log the payload for debugging
     this.adminService.login(this.login.value, 'user').subscribe(
       data => {
-        localStorage.setItem('token', data.token);
+        localStorage.setItem('token', data.access_token);
         //this.router.navigate(['signup']);
+        console.log(data.access_token);
+        
         this.router.navigate(['']);
       },
       error => {
