@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AdminDashboardService } from '../../../services/admin-dashboard.service';
-import { Category } from '../../../interfaces/category';
 
 @Component({
   selector: 'app-categories',
