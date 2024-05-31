@@ -9,15 +9,15 @@ import { UserProfileComponent } from './components/userprofile/userprofile.compo
 import { CartComponent } from './components/cart/cart.component';
 
 export const routes: Routes = [
-  { path: '', component: WishlistComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'loginAdmin', component: LoginAdminComponent },
-  { path: 'signup', component: SignupComponent },
+
   { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: '', component: UserProfileComponent },
   { path: 'home', component: HomeComponent },
   { path: 'checkout', component: CheckoutComponent },
   { path: 'wishlist', component: WishlistComponent },
   { path: 'cart', component: CartComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'loginAdmin', component: LoginAdminComponent },
+  { path: 'signup', component: SignupComponent },
+  { path: 'profile', component: UserProfileComponent },
   { path: '**', redirectTo: '', pathMatch: 'full' },
 ];
