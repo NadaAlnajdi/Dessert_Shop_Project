@@ -18,43 +18,34 @@
                 <form [formGroup]="userProfileForm" (ngSubmit)="updateProfile()">
                   <div class="row">
                     <div class="col-sm-6">
-
                       <label for="first_name" class="m-b-10 f-w-600">First Name :</label>
-
-                      <h6 class="text-muted f-w-400">{{ userProfile?.first_name }}</h6>
+                      <input formControlName="first_name" class="form-control" />
                     </div>
                     <div class="col-sm-6">
                       <label for="last_name" class="m-b-10 f-w-600">Last Name :</label>
-
-                      <h6 class="text-muted f-w-400">{{ userProfile?.last_name }}</h6>
+                      <input formControlName="last_name" class="form-control" />
                     </div>
-
                   </div>
                   <div class="row">
                     <div class="col-sm-6">
                       <label for="email" class="m-b-10 f-w-600">Email :</label>
-
-                      <h6 class="text-muted f-w-400">{{ userProfile?.email }}</h6>
+                      <input formControlName="email" class="form-control" readonly />
                     </div>
                     <div class="col-sm-6">
                       <label for="gender" class="m-b-10 f-w-600">Gender :</label>
-
-                      <h6 class="text-muted f-w-400">{{ userProfile?.gender }}</h6>
+                      <input formControlName="gender" class="form-control" />
                     </div>
                   </div>
                   <div class="row">
                     <div class="col-sm-6">
                       <label for="role" class="m-b-10 f-w-600">Role :</label>
-
-                      <h6 class="text-muted f-w-400">{{ userProfile?.role }}</h6>
+                      <input formControlName="role" class="form-control" readonly/>
                     </div>
-                    <div class="col-sm-6">
-                      <label for="password" class="m-b-10 f-w-600">Password :</label>
 
-                    </div>
                   </div>
-
+                  <button type="submit" class="btn btn-warning m-t-10">Update Profile</button>
                 </form>
+
                 <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Addresses :</h6>
                 <div *ngFor="let address of addresses" class="row">
                   <div class="col-sm-6">
@@ -82,10 +73,8 @@
                   </div>
                   <div class="col-sm-12" *ngIf="order.status === 'pending'">
                     <button class="btn btn-danger m-b-10" (click)="cancelOrder(order.id)">Cancel Order</button>
-
                   </div>
                 </div>
-
               </div>
             </div>
           </div>

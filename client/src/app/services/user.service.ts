@@ -16,10 +16,10 @@ export class UserService {
   }
 
   updateUserProfile(data: any): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}`, data);
+    return this.http.post<any>(`${this.apiUrl}`, data);
   }
 
   cancelOrder(orderId: string): Observable<any> {
-    return this.http.delete<any>(`${this.apiUrl}${orderId}`);
+    return this.http.delete<any>(`${this.apiUrl}/${orderId}`);
   }
 }

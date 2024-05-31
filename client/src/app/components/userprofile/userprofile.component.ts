@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-userprofile',
@@ -20,12 +20,13 @@ export class UserProfileComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private userService: UserService) {
     this.userProfileForm = this.fb.group({
-      first_name: ['', Validators.required],
-      last_name: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      gender: ['', Validators.required],
-      role: ['', Validators.required],
-      password: ['', [Validators.required, Validators.minLength(8)]],
+      first_name: [''],
+      last_name: [''],
+      email: [''],
+      gender: [''],
+      role: [''],
+      image: [''],
+
     });
   }
 
@@ -33,13 +34,17 @@ export class UserProfileComponent implements OnInit {
     this.userService.getUserProfile().subscribe(
       (user) => {
         this.userProfile = user;
+        this.userProfileForm.patchValue({
+          first_name: user.first_name,
+          last_name: user.last_name,
+          email: user.email,
+          gender: user.gender,
+          role: user.role,
+          image: user.image,
+        });
       },
-      (err) => {
-        console.error('Error fetching user profile', err);
-      }
     );
   }
-
 
   updateProfile(): void {
     if (this.userProfileForm.valid) {
