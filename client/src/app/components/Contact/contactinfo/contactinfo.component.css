@@ -1,0 +1,26 @@
+/* contact-info.component.css */
+.contact.spad {
+  padding: 60px 0;
+}
+
+.map {
+  margin-bottom: 30px;
+}
+
+.map__inner {
+  background: #f9f9f9;
+  padding: 20px;
+  text-align: center;
+}
+
+.contact__address__item {
+  background: #f9f9f9;
+  padding: 20px;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.map__iframe iframe {
+  width: 100%;
+  border: 0;
+}
