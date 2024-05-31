@@ -1,6 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
 @import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
-@import  "../node_modules/@fortawesome/fontawesome-free/css/all.min.css";
 @import   "../node_modules/bootstrap-icons/font/bootstrap-icons.css";
 /* @import "./_base.scss"; */
 @import './_responsive.scss';
@@ -18,3 +17,31 @@
   font-size: 2rem;
   color: #fff;
 } */
+
+
+/* Custom styles for the sidebar in admin dashboard */
+.sb-sidenav .nav-link {
+  color: #adb5bd;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.sb-sidenav .nav-link:hover {
+  background-color: #495057;
+  color: #fff;
+}
+
+.sb-sidenav .nav-link.active {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.sb-sidenav .nav-link .sb-nav-link-icon {
+  margin-right: 10px;
+}
+
+.sb-sidenav .sb-sidenav-menu-heading {
+  padding: 10px;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: #adb5bd;
+}
