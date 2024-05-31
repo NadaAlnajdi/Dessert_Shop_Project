@@ -89,4 +89,11 @@ class UserController extends Controller
 
         return response()->json(['message' => 'Account deleted successfully']);
     }
+    
+    public function getUserOrders($id)
+    {
+        $userWithOrders = User::with(['shippingAddresses.orders.orderItems'])->findOrFail($id);
+        
+        return response()->json($userWithOrders);
+    }
 }
