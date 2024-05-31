@@ -32,7 +32,7 @@ export class CartService {
   }
 
   getCartByUserId(userId: number): Observable<Cart[]>  {
-    return this.http.get<Cart[]>(`${this.apiUrl}/carts/1`);
+    return this.http.get<Cart[]>(`${this.apiUrl}/carts/${userId}`);
   }
 
   createCart(userId: number): Observable<Cart> {
@@ -40,20 +40,20 @@ export class CartService {
     return this.http.post<Cart>(`${this.apiUrl}/carts`, newCart);
   }
 
-  getCartItems(cartid :number): Observable<CartItem[]> {
-    console.log(`${this.apiUrl}/cart-items/${cartid}`)
-    return this.http.get<CartItem[]>(`${this.apiUrl}/cart-items/1`);
+   getCartItems(): Observable<CartItem[]> {
+    return this.http.get<CartItem[]>(`${this.apiUrl}/cart-items`);
   }
 
- createCartItem(cartItem: CartItem): Observable<CartItem> {
-    return this.http.post<CartItem>(`${this.apiUrl}/cart-items`, cartItem);
+  addToCart(productId: number, quantity: number, price: number): Observable<CartItem> {
+    return this.http.post<CartItem>(`${this.apiUrl}/cart-items`, { product_id: productId, quantity, price });
   }
 
   deleteCartItem(cartItemId: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/cart-items/${cartItemId}`);
   }
+
   deleteCartItems(): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/cart-items/`);
+    return this.http.delete<void>(`${this.apiUrl}/cart-items`);
   }
 
  
