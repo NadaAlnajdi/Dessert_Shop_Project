@@ -1,0 +1,213 @@
+<!-- Button to Open the Modal -->
+<button
+  type="button"
+  class="btn btn-primary"
+  data-bs-toggle="modal"
+  data-bs-target="#addPromotionModal"
+>
+  Add New Promotion
+</button>
+
+<!-- The Modal -->
+<div
+  class="modal fade"
+  id="addPromotionModal"
+  tabindex="-1"
+  aria-labelledby="addPromotionModalLabel"
+  aria-hidden="true"
+  data-bs-backdrop="static"
+  #addPromotionModal
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addPromotionModalLabel">
+          Add New Promotion
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="promotionForm" (ngSubmit)="onSubmit()">
+          <div class="mb-3">
+            <label for="title" class="form-label">Title</label>
+            <input
+              type="text"
+              class="form-control"
+              id="title"
+              formControlName="title"
+            />
+            <div
+              *ngIf="
+                promotionForm.get('title')?.invalid &&
+                (promotionForm.get('title')?.dirty ||
+                  promotionForm.get('title')?.touched)
+              "
+              class="text-danger"
+            >
+              <div *ngIf="promotionForm.get('title')?.errors?.['required']">
+                Title is required.
+              </div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea
+              class="form-control"
+              id="description"
+              formControlName="description"
+              rows="3"
+            ></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="discount" class="form-label">Discount</label>
+            <input
+              type="number"
+              class="form-control"
+              id="discount"
+              formControlName="discount"
+            />
+            <div
+              *ngIf="
+                promotionForm.get('discount')?.invalid &&
+                (promotionForm.get('discount')?.dirty ||
+                  promotionForm.get('discount')?.touched)
+              "
+              class="text-danger"
+            >
+              <div *ngIf="promotionForm.get('discount')?.errors?.['required']">
+                Discount is required.
+              </div>
+              <div *ngIf="promotionForm.get('discount')?.errors?.['min']">
+                Discount must be at least 1.
+              </div>
+              <div *ngIf="promotionForm.get('discount')?.errors?.['max']">
+                Discount cannot be more than 100.
+              </div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="startDate" class="form-label">Start Date</label>
+            <input
+              type="date"
+              class="form-control"
+              id="startDate"
+              formControlName="startDate"
+            />
+            <div
+              *ngIf="
+                promotionForm.get('startDate')?.invalid &&
+                (promotionForm.get('startDate')?.dirty ||
+                  promotionForm.get('startDate')?.touched)
+              "
+              class="text-danger"
+            >
+              <div *ngIf="promotionForm.get('startDate')?.errors?.['required']">
+                Start Date is required.
+              </div>
+              <div
+                *ngIf="
+                  promotionForm.get('startDate')?.errors?.['startDateInvalid']
+                "
+              >
+                Start Date cannot be in the past.
+              </div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="endDate" class="form-label">End Date</label>
+            <input
+              type="date"
+              class="form-control"
+              id="endDate"
+              formControlName="endDate"
+            />
+            <div
+              *ngIf="
+                promotionForm.get('endDate')?.invalid &&
+                (promotionForm.get('endDate')?.dirty ||
+                  promotionForm.get('endDate')?.touched)
+              "
+              class="text-danger"
+            >
+              <div *ngIf="promotionForm.get('endDate')?.errors?.['required']">
+                End Date is required.
+              </div>
+            </div>
+            <div
+              *ngIf="promotionForm.errors?.['dateRangeInvalid']"
+              class="text-danger mb-3"
+            >
+              End Date must be after Start Date.
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="isActive" class="form-label">Is Active</label>
+            <select
+              class="form-control"
+              id="isActive"
+              formControlName="isActive"
+            >
+              <option [ngValue]="true">Yes</option>
+              <option [ngValue]="false">No</option>
+            </select>
+            <div
+              *ngIf="
+                promotionForm.get('isActive')?.invalid &&
+                (promotionForm.get('isActive')?.dirty ||
+                  promotionForm.get('isActive')?.touched)
+              "
+              class="text-danger"
+            >
+              <div *ngIf="promotionForm.get('isActive')?.errors?.['required']">
+                Is Active is required.
+              </div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="products" class="form-label">Products</label>
+            <select
+              class="form-control"
+              id="products"
+              formControlName="products"
+              multiple
+            >
+              <option *ngFor="let product of products" [value]="product.id">
+                {{ product.title }}
+              </option>
+            </select>
+            <div
+              *ngIf="
+                promotionForm.get('products')?.invalid &&
+                (promotionForm.get('products')?.dirty ||
+                  promotionForm.get('products')?.touched)
+              "
+              class="text-danger"
+            >
+              <div *ngIf="promotionForm.get('products')?.errors?.['required']">
+                Products are required.
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="serverError" class="alert alert-danger">
+            {{ serverError }}
+          </div>
+
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="!promotionForm.valid"
+          >
+            Save Promotion
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
