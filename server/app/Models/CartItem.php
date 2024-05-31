@@ -10,6 +10,7 @@ class CartItem extends Model
         'cart_id',
         'product_id',
         'quantity',
+        'price',
     ];
 
     public function cart()
@@ -21,4 +22,9 @@ class CartItem extends Model
     {
         return $this->belongsTo(Product::class);
     }
+
+    public function user()
+{
+    return $this->belongsTo(User::class);
+}
 }
