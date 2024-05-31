@@ -2,3 +2,19 @@
 @import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 @import  "../node_modules/@fortawesome/fontawesome-free/css/all.min.css";
 @import   "../node_modules/bootstrap-icons/font/bootstrap-icons.css";
+/* @import "./_base.scss"; */
+@import './_responsive.scss';
+/* styles.css or hero.component.css
+.owl-carousel .owl-nav button.owl-prev,
+.owl-carousel .owl-nav button.owl-next,
+.owl-carousel button.owl-dot {
+  background: transparent;
+  border: none;
+  outline: none;
+}
+
+.owl-carousel .owl-nav button.owl-prev i,
+.owl-carousel .owl-nav button.owl-next i {
+  font-size: 2rem;
+  color: #fff;
+} */

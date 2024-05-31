@@ -1,0 +1,82 @@
+/*---------------------
+  Categories
+-----------------------*/
+@import 'category.component.scss';
+
+.categories__slider {
+  padding: 0 15px;
+}
+.categories__slider.owl-carousel .owl-stage-outer {
+  padding-bottom: 40px;
+  border-bottom: 1px solid rgba(240, 135, 50, 0.5);
+}
+.categories__slider.owl-carousel .owl-nav button {
+  font-size: 36px;
+  color: #888888;
+  position: absolute;
+  left: -60px;
+  top: 35%;
+}
+.categories__slider.owl-carousel .owl-nav button.owl-next {
+  left: auto;
+  right: -60px;
+}
+
+.categories__item {
+  text-align: center;
+  border-radius: 50%;
+  -webkit-transition: all, 0.3s;
+  -o-transition: all, 0.3s;
+  transition: all, 0.3s;
+  height: 194px;
+  width: 194px;
+  padding-top: 25px;
+  position: relative;
+}
+.categories__item:after {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  bottom: -48px;
+  width: 15px;
+  height: 15px;
+  border: 1px solid #f08632;
+  border-color: transparent #f08632 #f08632 transparent;
+  content: "";
+  -webkit-transform: rotate(-135deg);
+      -ms-transform: rotate(-135deg);
+          transform: rotate(-135deg);
+  opacity: 0;
+  -webkit-transition: all, 0.3s;
+  -o-transition: all, 0.3s;
+  transition: all, 0.3s;
+}
+.categories__item:hover {
+  background: #f08632;
+}
+.categories__item:hover:after {
+  opacity: 1;
+}
+.categories__item:hover span {
+  color: #ffffff;
+}
+.categories__item:hover h5 {
+  color: #ffffff;
+}
+
+.categories__item__icon span {
+  color: #f08632;
+  -webkit-transition: all, 0.2s;
+  -o-transition: all, 0.2s;
+  transition: all, 0.2s;
+}
+.categories__item__icon h5 {
+  color: #111111;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-top: 4px;
+  -webkit-transition: all, 0.2s;
+  -o-transition: all, 0.2s;
+  transition: all, 0.2s;
+}
