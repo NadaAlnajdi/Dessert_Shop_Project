@@ -63,6 +63,18 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('wishlists', [WishlistController::class, 'store']);
     Route::delete('wishlists/{product_id}', [WishlistController::class, 'destroy']);
 
+    //cart
+    Route::get('/carts', [CartController::class, 'index']);
+    Route::post('/carts', [CartController::class, 'store']);
+    Route::get('/carts/{user_id}', [CartController::class, 'show']);
+    Route::put('/carts/{id}', [CartController::class, 'update']);
+    Route::delete('/carts/{id}', [CartController::class, 'destroy']);
+
+    Route::get('/cart-items', [CartItemController::class, 'index']);
+    Route::post('/cart-items', [CartItemController::class, 'store']);
+    Route::get('/cart-items/{user_id}', [CartItemController::class, 'show']);
+    Route::put('/cart-items/{id}', [CartItemController::class, 'update']);
+    Route::delete('/cart-items/{id}', [CartItemController::class, 'destroy']);
     // Checkout routes
     Route::post('/checkout', [OrderController::class, 'checkout']);
     Route::get('/orders', [OrderController::class, 'getOrders']);
@@ -96,14 +108,4 @@ Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function ()
     Route::get('users', [AdminController::class,'getUsers']);
 });
 
-    Route::get('/carts', [CartController::class, 'index']);
-    Route::post('/carts', [CartController::class, 'store']);
-    Route::get('/carts/{user_id}', [CartController::class, 'show']);
-    Route::put('/carts/{id}', [CartController::class, 'update']);
-    Route::delete('/carts/{id}', [CartController::class, 'destroy']);
-
-    Route::get('/cart-items', [CartItemController::class, 'index']);
-    Route::post('/cart-items', [CartItemController::class, 'store']);
-    Route::get('/cart-items/{user_id}', [CartItemController::class, 'show']);
-    Route::put('/cart-items/{id}', [CartItemController::class, 'update']);
-    Route::delete('/cart-items/{id}', [CartItemController::class, 'destroy']);
+    
