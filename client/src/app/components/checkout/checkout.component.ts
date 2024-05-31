@@ -3,6 +3,9 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { CheckoutService } from '../../services/checkout.service';
 import { ShippingAddressesService } from '../../services/shipping-addresses.service';
 import { CommonModule } from '@angular/common';
+import { CartService } from '../../services/cart.servics';
+import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-checkout', 
@@ -18,13 +21,13 @@ export class CheckoutComponent implements OnInit {
   orderItems: any[] = [];
   totalPrice: number = 0;
 
-  constructor(private formBuilder: FormBuilder, private checkoutService: CheckoutService,private shippingAddressesService:ShippingAddressesService) {}
+  constructor(private formBuilder: FormBuilder,private router: Router,  private toastr: ToastrService, private checkoutService: CheckoutService,private shippingAddressesService:ShippingAddressesService, private cartService:CartService) {}
 
 
   ngOnInit(): void {
     this.initForm();
-    this.loadShippingAddresses();
-    this.loadOrderItems();
+    this.getShippingAddresses();
+    this.getOrderItems();
   }
 
   initForm(): void {
@@ -34,27 +37,29 @@ export class CheckoutComponent implements OnInit {
         city: [''],
         state: [''],
         street: [''],
-        phoneNumber: ['']
+        phone_number: ['']
       })
     });
   }
 
-  loadShippingAddresses(): void {
+  getShippingAddresses(): void {
     this.shippingAddressesService.getShippingAddress().subscribe(addresses => {
       this.shippingAddresses = addresses;
     });
   }
 
-  loadOrderItems(): void {
-    // Load order items and calculate total price
-    this.orderItems = [
-      { product_name: 'Vanilla salted caramel', quantity: 1, price: 300.00 },
-      { product_name: 'German chocolate', quantity: 1, price: 170.00 },
-      { product_name: 'Sweet autumn', quantity: 1, price: 170.00 },
-      { product_name: 'Gluten free mini dozen', quantity: 1, price: 110.00 }
-    ];
-    this.totalPrice = this.orderItems.reduce((total, item) => total + (item.price * item.quantity), 0);
+  getOrderItems(): void {
+    this.cartService.getCartItems().subscribe(
+      items => {
+        this.orderItems = items;
+        this.totalPrice = this.orderItems.reduce((total, item) => total + (item.product?.price * item.quantity), 0);
+      },
+      error => {
+        this.toastr.error('Failed to load cart items', 'Error');
+      }
+    );
   }
+
 
 
   onSubmit(): void {
@@ -67,22 +72,18 @@ export class CheckoutComponent implements OnInit {
   
       const orderData = {
         order_items: this.orderItems,
-        shipping_address_id: shipping_address_id,
-        shipping_address: shipping_address
+       ...formValue
       };
-  
-      this.checkoutService.createOrder(orderData).subscribe(
-        (response) => {
-          console.log('Order placed successfully', response);
-          // Handle success, maybe redirect to a confirmation page
-        },
-        (error) => {
-          console.error('Error placing order', error);
-          // Handle error, display error message to user
-        }
-      );
-    } else {
-      // Form is invalid, display error messages to user or handle accordingly
-    }
+      console.log(orderData);
+      
+      this.checkoutService.createOrder(orderData).subscribe((response) => {
+        this.toastr.success('Your order has been placed successfully!', 'Order Placed');
+        this.router.navigate(['/home']); 
+      }, error => {
+        this.toastr.error('There was an error placing your order. Please try again.', 'Order Failed');
+        console.error('Error creating order:', error);
   }
-}
+)}
+  
+  }}
+  

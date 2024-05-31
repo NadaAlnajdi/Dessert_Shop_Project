@@ -1,0 +1,90 @@
+.nav-links a {
+    margin: 0 10px;
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  .nav-links a:hover {
+    text-decoration: underline;
+  }
+
+  .custom-card {
+    background-color: #fdf3ea;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: none;
+  }
+  
+  .custom-card-body {
+    padding: 1.5rem;
+  }
+  
+  .custom-list-group {
+    background-color: transparent;
+    border: none;
+  }
+  
+  .custom-list-group-item {
+    background-color: transparent;
+    border: none;
+  }
+  
+  .custom-list-group-item:not(:last-child) {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125); /* Optional: Adds a divider between items */
+  }
+
+  /* wishlist.component.css or your component's CSS file */
+
+.form-group h3 {
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.form-check-label {
+  margin-left: 0.5rem;
+}
+
+.bg-light {
+  background-color: #f8f9fa !important;
+}
+
+.bg-white {
+  background-color: #ffffff !important;
+}
+
+.p-4 {
+  padding: 1.5rem !important;
+}
+
+.rounded {
+  border-radius: 0.25rem !important;
+}
+
+.shadow-sm {
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
+}
+
+.mb-3, .mb-4 {
+  margin-bottom: 1rem !important;
+}
+
+.mt-3 {
+  margin-top: 1rem !important;
+}
+
+label.form-label {
+  font-weight: bold;
+  color: #555;
+}
+
+button.btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+button.btn-primary:hover {
+  background-color: #0056b3;
+  border-color: #0056b3;
+}
+
+  
