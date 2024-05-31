@@ -67,3 +67,12 @@
   color: white;
 }
 .remove-product span{font-size: 20px;}
+.nav-links a {
+  margin: 0 10px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.nav-links a:hover {
+  text-decoration: underline;
+}
