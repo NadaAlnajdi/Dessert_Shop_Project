@@ -1,0 +1,93 @@
+<main>
+  <div class="container-fluid px-4">
+    <!-- Start All Created Orders -->
+    <div class="card mb-4 my-5">
+      <div class="card-header bg-primary text-white fs-5">
+        <i class="fas fa-users me-1"></i>
+        All Created Orders
+      </div>
+      <div class="card-body">
+        <table class="row-border hover table table-striped">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>User</th>
+              <th>Order Date</th>
+              <th>Total Price</th>
+              <th>Shipping Address</th>
+              <th>Phone Number</th>
+              <th>Products</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="
+                let order of allOrders
+                  | paginate
+                    : { itemsPerPage: itemsPerPage, currentPage: page };
+                let i = index
+              "
+            >
+              <td>{{ i + 1 + (page - 1) * itemsPerPage }}</td>
+              <td>
+                {{ order.shipping_address.user.first_name }}
+                {{ order.shipping_address.user.last_name }}
+              </td>
+              <td>{{ order.date | date : "dd-MM-yyyy" }}</td>
+              <td>{{ order.total_price | currency }}</td>
+              <td>
+                {{ order.shipping_address.city }},
+                {{ order.shipping_address.state }},
+                {{ order.shipping_address.street }}
+              </td>
+              <td>{{ order.shipping_address.phone_number }}</td>
+              <td>
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  (click)="openProductModal(order)"
+                >
+                  <i class="fa-solid fa-eye"></i>
+                </button>
+              </td>
+              <td class="text-center">
+                <div
+                  [ngClass]="{
+                    'bg-warning': order.status === 'pending',
+                    'bg-success': order.status === 'accepted',
+                    'bg-danger': order.status === 'rejected',
+                    'p-2': true,
+                  }"
+                >
+                  {{ order.status | titlecase }}
+                </div>
+              </td>
+              <td *ngIf="order.status === 'pending'">
+                <button
+                  (click)="acceptOrder(order.id)"
+                  class="btn btn-success btn-sm me-2"
+                >
+                  Accept
+                </button>
+                <button
+                  (click)="rejectOrder(order.id)"
+                  class="btn btn-danger btn-sm"
+                >
+                  Reject
+                </button>
+              </td>
+              <td *ngIf="order.status !== 'pending'">No actions available</td>
+            </tr>
+          </tbody>
+        </table>
+        <pagination-controls (pageChange)="page = $event"></pagination-controls>
+      </div>
+    </div>
+    <!-- End All Created Orders -->
+    <app-order-products-modal
+      [products]="selectedProducts"
+    ></app-order-products-modal>
+  </div>
+</main>
