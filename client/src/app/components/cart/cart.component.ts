@@ -13,8 +13,8 @@ import { Subscription } from 'rxjs';
 })
 export class CartComponent implements OnInit, OnDestroy {
   sub: Subscription | null = null;
-  cart_id: any = localStorage.getItem('cart_id');    
-  user_id: number = parseInt(localStorage.getItem('id')!, 10);  
+  cart_id: any = localStorage.getItem('cart_id');
+  user_id: number = parseInt(localStorage.getItem('id')!, 10);
   cart: CartItem[] = [];
   totalPrice: number = 0;
 
@@ -27,7 +27,7 @@ export class CartComponent implements OnInit, OnDestroy {
         this.calculateTotalPrice();
       });
     });
-  } 
+  }
 
   ngOnDestroy(): void {
     this.sub?.unsubscribe();

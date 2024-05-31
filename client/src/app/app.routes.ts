@@ -7,12 +7,18 @@ import { CheckoutComponent } from './components/checkout/checkout.component';
 import { HomeComponent } from './components/home/home.component';
 import { UserProfileComponent } from './components/userprofile/userprofile.component';
 import { CartComponent } from './components/cart/cart.component';
+import { AboutlayoutComponent } from './components/aboutlayout/aboutlayout.component';
+import {  ContactlayoutComponent  } from './components/contactlayout/contactlayout.component';
+
 
 export const routes: Routes = [
 
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
-  { path: 'checkout', component: CheckoutComponent },
+  {path:'about', component:AboutlayoutComponent},
+  {path:'contact', component: ContactlayoutComponent },
+
+{ path: 'checkout', component: CheckoutComponent },
   { path: 'wishlist', component: WishlistComponent },
   { path: 'cart', component: CartComponent },
   { path: 'login', component: LoginComponent },

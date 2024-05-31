@@ -1,0 +1,32 @@
+/* contact-form.component.css */
+.contact.spad {
+  padding: 60px 0;
+}
+
+.contact__form input,
+.contact__form textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #e1e1e1;
+  border-radius: 5px;
+}
+
+.contact__form .btn {
+  display: inline-block;
+  background: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.contact__form .btn:hover {
+  background: #0056b3;
+}
+
+.contact__text img {
+  max-width: 100%;
+  margin-top: 20px;
+}
