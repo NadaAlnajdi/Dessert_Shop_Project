@@ -43,10 +43,25 @@
   font-size: 16px;
 }
 .about__video {
-  margin-bottom: 20px; /* Adjust as needed */
+  margin-bottom: 20px; 
 }
 
 .about__video video {
   width:600px;
-  height: 400px; /* Optional: Add border-radius to match other elements */
+  height: 400px;
 }
+
+.logo-img {
+  height: 50px;
+}
+
+.nav-links a {
+  margin: 0 10px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.nav-links a:hover {
+  text-decoration: underline;
+}
+

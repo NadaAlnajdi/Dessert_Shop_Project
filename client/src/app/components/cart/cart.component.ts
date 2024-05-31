@@ -22,10 +22,10 @@ export class CartComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.sub = this.cartService.getCartByUserId(this.user_id).subscribe(items => {
-      this.sub = this.cartService.getCartItems(this.cart_id).subscribe(items => {
-        this.cart = items;
-        this.calculateTotalPrice();
-      });
+      // this.sub = this.cartService.getCartItems(this.cart_id).subscribe(items => {
+      //   this.cart = items;
+      //   this.calculateTotalPrice();
+      // });
     });
   }
 
