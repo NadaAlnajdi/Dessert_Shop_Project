@@ -10,7 +10,11 @@ use App\Models\ShippingAddress;
 
 class UserController extends Controller
 {
+    public function index() {
+        $users = User::all();
 
+        return response()->json($users, 200);
+    }
 
     public function show($id)
     {
@@ -84,5 +88,12 @@ class UserController extends Controller
         $user->delete();
 
         return response()->json(['message' => 'Account deleted successfully']);
+    }
+    
+    public function getUserOrders($id)
+    {
+        $userWithOrders = User::with(['shippingAddresses.orders.orderItems'])->findOrFail($id);
+        
+        return response()->json($userWithOrders);
     }
 }
