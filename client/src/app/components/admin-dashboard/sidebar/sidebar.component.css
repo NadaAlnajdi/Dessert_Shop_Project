@@ -1,0 +1,15 @@
+.sb-sidenav {
+  width: 250px;
+  background-color: #343a40;
+  color: white;
+}
+.sb-sidenav .nav-link {
+  color: rgba(255, 255, 255, 0.75);
+}
+.sb-sidenav .nav-link:hover {
+  color: white;
+}
+.sb-sidenav .sb-sidenav-footer {
+  padding: 1rem;
+  background-color: #212529;
+}
