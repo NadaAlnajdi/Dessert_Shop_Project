@@ -32,6 +32,7 @@ class OrderController extends Controller
     public function checkout(Request $request)
     {
         $user = Auth::user();
+        var_dump($user);
 
         // Validate the request data for creating an order
         $request->validate([
@@ -86,7 +87,7 @@ class OrderController extends Controller
         return response()->json([
             'message' => 'Order created successfully',
             'order' => $order,
-            'shippingAddress' => $shippingAddress,
+
         ], 201);
     }
 

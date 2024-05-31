@@ -16,7 +16,7 @@ class WishlistController extends Controller
         }])->where('user_id', $user->id)->first();
 
         $wishlistProducts = $wishlist->products->map(function($product) {
-            $product->first_image = $product->images->first();
+            $product->images = $product->images->first();
             return $product;
         });
 

@@ -3,8 +3,12 @@ import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { addtokenInterceptor } from './interceptors/addtoken.interceptor';
+import { provideToastr } from 'ngx-toastr';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideRouter(routes),provideHttpClient((withInterceptors([addtokenInterceptor])))]
+  providers: [provideRouter(routes),provideHttpClient((withInterceptors([addtokenInterceptor]))),provideToastr(),provideAnimations()]
 
 };
+
+
