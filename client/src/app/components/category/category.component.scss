@@ -1,0 +1,91 @@
+/*---------------------
+  Categories
+-----------------------*/
+@import '../../../variable.scss';
+@import '../../../mixins';
+
+.categories__slider {
+  padding: 0 15px;
+  
+  &.owl-carousel {
+
+    .owl-stage-outer {
+      padding-bottom: 40px;
+      border-bottom: 1px solid rgba(240, 135, 50, 0.5);
+  }
+
+    .owl-nav {
+
+      button {
+        font-size: 36px;
+        color: #888888;
+        position: absolute;
+        left: -60px;
+        top: 35%;
+
+        &.owl-next {
+          left: auto;
+          right: -60px;
+        }
+      }
+    }
+  }
+}
+
+.categories__item {
+  text-align: center;
+  border-radius: 50%;
+  @include transition(all, .3s);
+  height: 194px;
+  width: 194px;
+  padding-top: 25px;
+  position: relative;
+
+  &:after {
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    bottom: -48px;
+    width: 15px;
+    height: 15px;
+    border: 1px solid $primary-color;
+    border-color: transparent $primary-color $primary-color transparent;
+    content: "";
+    transform: rotate(-135deg);
+    opacity: 0;
+    @include transition(all, .3s);
+  }
+
+  &:hover {
+    background: $primary-color;
+
+    &:after {
+      opacity: 1;
+    }
+
+    span {
+      color: $white-color;
+    }
+
+    h5 {
+      color: $white-color;
+    }
+  }
+}
+
+.categories__item__icon {
+
+  span {
+    color: $primary-color;
+    @include transition(all, .2s);
+  }
+
+  h5 {
+    color: $heading-color;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-top: 4px;
+    @include transition(all, .2s);
+  }
+}

@@ -8,14 +8,14 @@ import { CheckoutComponent } from './components/checkout/checkout.component';
 import { UserProfileComponent } from './components/userprofile/userprofile.component';
 import { CartComponent } from './components/cart/cart.component';
 import { ShopComponent } from './components/shop/shop.component';
-import { ProductTableComponent } from './components/product-table/product-table.component';
+// import { ProductTableComponent } from './components/product-table/product-table.component';
 import { CategoryComponent } from './components/categories/categories.component';
-import { ProductCreateComponent } from './components/product-table/product-create/product-create.component';
-import { ProductUpdateComponent } from './components/product-table/product-update/product-update.component';
+// import { ProductCreateComponent } from './components/product-table/product-create/product-create.component';
+// import { ProductUpdateComponent } from './components/product-table/product-update/product-update.component';
 import { CategoryCreateComponent } from './components/categories/category-create/category-create.component';
 import { CategoryDeleteComponent } from './components/categories/category-delete/category-delete.component';
 import { CategoryUpdateComponent } from './components/categories/category-update/category-update.component';
-import { ProductDeleteComponent } from './components/product-table/product-delete/product-delete.component';
+// import { ProductDeleteComponent } from './components/product-table/product-delete/product-delete.component';
 import { AboutlayoutComponent } from './components/aboutlayout/aboutlayout.component';
 import {  ContactlayoutComponent  } from './components/contactlayout/contactlayout.component';
 
@@ -36,11 +36,11 @@ export const routes: Routes = [
   { path: 'shop', component: ShopComponent },
   {
     path: 'product',
-    component: ProductTableComponent,
+    // component: ProductTableComponent,
     children: [
-      { path: 'add', component: ProductCreateComponent },
-      { path: 'update/:id', component: ProductUpdateComponent },
-      { path: 'delete/:id', component: ProductDeleteComponent },
+      // { path: 'add', component: ProductCreateComponent },
+      // { path: 'update/:id', component: ProductUpdateComponent },
+      // { path: 'delete/:id', component: ProductDeleteComponent },
     ],
   },
   {
