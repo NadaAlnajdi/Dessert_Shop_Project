@@ -63,6 +63,9 @@ Route::apiResource('products', ProductController::class);
 // Category routes
 Route::apiResource('categories', CategoryController::class);
 
+// Promotion routes
+Route::get('promotions/active', [PromotionController::class, 'getActivePromotions']);
+
 // Admin routes
 Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function () {
     Route::get('dashboard', [AdminController::class, 'overview']);
